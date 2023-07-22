@@ -1,1 +1,3 @@
-console.log('test')
+import 'dotenv/config';
+
+console.log(process.env.test);
