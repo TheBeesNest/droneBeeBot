@@ -4,10 +4,9 @@ import * as path from'path';
 import * as fs from 'fs';
 import { ExtendedClient } from './classes/extClient';
 
+console.log('starting up Bot!')
 
 const client = new ExtendedClient({ intents: [GatewayIntentBits.Guilds] });
-
-console.log('starting up Bot!')
 
 const foldersPath = path.join(__dirname, 'commands');
 const commandFolders = fs.readdirSync(foldersPath);
@@ -26,11 +25,18 @@ for (const folder of commandFolders) {
 		}
 	}
 }
-console.log(client.commands);
 
+const eventsPath = path.join(__dirname, 'events');
+const eventFiles = fs.readdirSync(eventsPath).filter(file => file.endsWith('.ts'));
 
-client.once(Events.ClientReady, c => {
-	console.log(`Ready! Logged in as ${c.user.tag}`);
-});
+for (const file of eventFiles) {
+	const filePath = path.join(eventsPath, file);
+	const event = require(filePath);
+	if (event.once) {
+		client.once(event.name, (...args) => event.execute(...args));
+	} else {
+		client.on(event.name, (...args) => event.execute(...args));
+	}
+}
 
 client.login(process.env.botApiToken);
