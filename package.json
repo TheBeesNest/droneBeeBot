@@ -5,7 +5,8 @@
   "main": "./src/main.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "nodemon",
+	"start": "ts-node src/main.ts",
+    "dev": "nodemon",
 	"commands:register": "ts-node src/deployCommands.ts"
   },
   "keywords": [],
