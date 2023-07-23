@@ -1,4 +1,4 @@
-import { GatewayIntentBits, Events } from 'discord.js';
+import { GatewayIntentBits } from 'discord.js';
 import 'dotenv/config';
 import * as path from'path';
 import * as fs from 'fs';
