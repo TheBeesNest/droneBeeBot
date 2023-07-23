@@ -8,6 +8,8 @@ console.log('starting up Bot!')
 
 const client = new ExtendedClient({ intents: [GatewayIntentBits.Guilds] });
 
+
+//searching through the commands list and building an array of all commands.
 const foldersPath = path.join(__dirname, 'commands');
 const commandFolders = fs.readdirSync(foldersPath);
 
@@ -26,6 +28,7 @@ for (const folder of commandFolders) {
 	}
 }
 
+//searching for all events and creating/registering the event handlers
 const eventsPath = path.join(__dirname, 'events');
 const eventFiles = fs.readdirSync(eventsPath).filter(file => file.endsWith('.ts'));
 
@@ -39,4 +42,5 @@ for (const file of eventFiles) {
 	}
 }
 
+//lets goooooo
 client.login(process.env.botApiToken);
