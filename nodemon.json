@@ -4,5 +4,6 @@
 	],
 	"ext": "ts",
 	"ignore": [],
-	"exec": "ts-node src/deployCommands.ts && ts-node src/main.ts"
+	"exec": "ts-node src/deployCommands.ts && ts-node src/main.ts",
+	"delay": 3000
   }
