@@ -3,6 +3,8 @@ import 'dotenv/config';
 import * as path from'path';
 import * as fs from 'fs';
 import { ExtendedClient } from './classes/extClient';
+import { dbSource } from './dbConnection';
+import { exit } from 'process';
 
 console.log('starting up Bot!')
 
@@ -43,4 +45,11 @@ for (const file of eventFiles) {
 }
 
 //lets goooooo
-client.login(process.env.botApiToken);
+try {
+	dbSource.initialize().then( () => console.log('DB connected and ready'))
+	client.login(process.env.botApiToken);
+	
+} catch (error) {
+	console.log(error);
+	exit(-1);
+}

@@ -8,12 +8,14 @@
 		"moduleResolution": "node",
 		"importHelpers": true,
 		"experimentalDecorators": true,
+		"emitDecoratorMetadata": true,
 		"esModuleInterop": true,
 		"skipLibCheck": true,
 		"allowSyntheticDefaultImports": true,
 		"resolveJsonModule": true,
 		"forceConsistentCasingInFileNames": true,
 		"removeComments": true,
+		"lib": ["ES6"],
 		"typeRoots": [
 			"node_modules/@types"
 		],

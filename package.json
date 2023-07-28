@@ -4,10 +4,10 @@
   "description": "",
   "main": "./src/main.js",
   "scripts": {
-	"start": "ts-node src/main.ts",
+    "start": "ts-node src/main.ts",
     "dev": "nodemon",
-	"commands:register": "ts-node src/deployCommands.ts",
-	"build": "tsc"
+    "commands:register": "ts-node src/deployCommands.ts",
+    "build": "tsc"
   },
   "keywords": [],
   "author": "",
@@ -15,6 +15,7 @@
   "dependencies": {
     "discord.js": "^14.11.0",
     "dotenv": "^16.3.1",
+    "mysql2": "^3.5.2",
     "reflect-metadata": "^0.1.13",
     "typeorm": "^0.3.17"
   },
