@@ -1,4 +1,5 @@
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, Entity, JoinColumn, OneToOne, PrimaryGeneratedColumn } from 'typeorm';
+import { Reason } from './reason';
 
 @Entity()
 export class UserWarning {
@@ -29,4 +30,8 @@ export class UserWarning {
 		default: () => 'NOW()'
 	})
 	offenceDateTime: Date;
+
+	@OneToOne(() => Reason)
+    @JoinColumn()
+    reason: Reason
 }
