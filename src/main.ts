@@ -1,10 +1,10 @@
 import { GatewayIntentBits } from 'discord.js';
 import 'dotenv/config';
-import * as path from'path';
 import * as fs from 'fs';
-import { ExtendedClient } from './classes/extClient';
-import { dbSource } from './dbConnection';
+import * as path from 'path';
 import { exit } from 'process';
+import { ExtendedClient } from './classes/extClient';
+import dbSource from './dbConnection';
 
 console.log('starting up Bot!')
 

@@ -8,6 +8,7 @@
     "dev": "nodemon",
     "commands:register": "ts-node src/deployCommands.ts",
     "build": "tsc",
+	"typeorm": "typeorm-ts-node-commonjs",
 	"migration:generate": "npm run typeorm migration:generate -- -d src/dbConnection.ts",
     "migration:run": "npm run typeorm migration:run -- -d src/dbConnection.ts",
     "migration:revert": "npm run typeorm migration:revert -- -d src/dbConnection.ts"

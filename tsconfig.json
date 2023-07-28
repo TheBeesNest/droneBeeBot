@@ -14,6 +14,7 @@
 		"allowSyntheticDefaultImports": true,
 		"resolveJsonModule": true,
 		"forceConsistentCasingInFileNames": true,
+		"strictPropertyInitialization": false,
 		"removeComments": true,
 		"lib": ["ES6"],
 		"typeRoots": [
