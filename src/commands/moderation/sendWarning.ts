@@ -36,12 +36,9 @@ export const execute = async (interaction: ChatInputCommandInteraction) => {
 			offenceReason.reason = reason;
 			warningData.reason = offenceReason;
 		}
-		console.log(warningData)
-
 		await dbSource.getRepository(UserWarning).save(warningData);
-
+		
 		await interaction.editReply(`warning has been logged for user: ${user}`);
-				
 		await interaction.followUp(warningMessage(user));
 		
 	} catch (error) {
