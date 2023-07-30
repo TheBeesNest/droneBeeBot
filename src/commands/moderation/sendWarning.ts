@@ -42,15 +42,7 @@ export const execute = async (interaction: ChatInputCommandInteraction) => {
 		await interaction.followUp(warningMessage(user));
 		
 	} catch (error) {
-		console.log(error);
+		new ErrorLogger(error, data.name, {user, reason});
 	}
-	
-
-
-
-	
-	
-	
-	new ErrorLogger('test error', data.name, {user, reason})
-	
+		
 }
