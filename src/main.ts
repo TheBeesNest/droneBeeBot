@@ -1,4 +1,4 @@
-import { GatewayIntentBits } from 'discord.js';
+import { ActivityType, GatewayIntentBits } from 'discord.js';
 import 'dotenv/config';
 import * as fs from 'fs';
 import * as path from 'path';
@@ -8,8 +8,8 @@ import dbSource from './dbConnection';
 
 console.log('starting up Bot!')
 
-const client = new ExtendedClient({ intents: [GatewayIntentBits.Guilds] });
-
+const client = new ExtendedClient({ intents: [GatewayIntentBits.Guilds],
+	presence: {activities: [{name: 'the hive for bad bees', type: ActivityType.Watching}]},});
 
 //searching through the commands list and building an array of all commands.
 const foldersPath = path.join(__dirname, 'commands');
@@ -49,6 +49,7 @@ try {
 	dbSource.initialize().then( () => console.log('DB connected and ready'))
 	client.login(process.env.botApiToken);
 	
+
 } catch (error) {
 	console.log(error);
 	exit(-1);

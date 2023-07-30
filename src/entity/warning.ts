@@ -31,7 +31,7 @@ export class UserWarning {
 	})
 	offenceDateTime: Date;
 
-	@OneToOne(() => Reason)
+	@OneToOne(() => Reason, {cascade: true})
     @JoinColumn()
     reason: Reason
 }

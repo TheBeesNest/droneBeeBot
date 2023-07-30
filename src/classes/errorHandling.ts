@@ -1,14 +1,14 @@
 import dbSource from '../dbConnection';
 import { DiscordError } from '../entity';
-import { IVariablesList } from '../interfaces/varables';
+import { IVariablesList } from '../interfaces/variables';
 
 class ErrorLogger {
 
-	constructor (error: string, command: string, variables?: IVariablesList){
+	constructor (error: unknown, command: string, variables?: IVariablesList){
 		const entity = new DiscordError;
 
 		entity.command = command;
-		entity.error = error;
+		entity.error = error as string;
 		if (variables) {entity.variables = JSON.stringify(variables)};
 
 		dbSource.getRepository(DiscordError).save(entity);

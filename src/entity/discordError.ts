@@ -12,7 +12,7 @@ export class DiscordError {
 	@Column({type: 'text'})
 	variables?: string;
 	
-	@Column()
+	@Column({type: 'text'})
 	error: string;
 
 }
