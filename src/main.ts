@@ -8,7 +8,7 @@ import dbSource from './dbConnection';
 
 console.log('starting up Bot!')
 
-export const client = new ExtendedClient({ intents: [GatewayIntentBits.Guilds, GatewayIntentBits.GuildMembers],
+const client = new ExtendedClient({ intents: [GatewayIntentBits.Guilds, GatewayIntentBits.GuildMembers],
 	presence: {activities: [{name: 'the hive for bad bees', type: ActivityType.Watching}]},});
 
 //searching through the commands list and building an array of all commands.

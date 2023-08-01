@@ -1,4 +1,4 @@
-import { SlashCommandBuilder, PermissionFlagsBits, ChatInputCommandInteraction, GuildMember } from 'discord.js';
+import { SlashCommandBuilder, PermissionFlagsBits, ChatInputCommandInteraction, GuildMember, TextChannel, MessagePayload } from 'discord.js';
 import ErrorLogger from '../../classes/errorHandling';
 import { Reason, UserWarning } from '../../entity';
 import dbSource from '../../dbConnection';
@@ -26,7 +26,8 @@ export const execute = async (interaction: ChatInputCommandInteraction) => {
 	const user = interaction.options.getMember('user') as GuildMember;
 	const reason = interaction.options.getString('reason');
 	try {
-		await interaction.deferReply({ephemeral: true});
+		//await interaction.deferReply({ephemeral: true});
+		const channel = interaction.client.channels.cache.get('1096178427767296080') as TextChannel;
 
 		const warningData = new UserWarning();
 		warningData.discordId = user.id;
@@ -40,6 +41,9 @@ export const execute = async (interaction: ChatInputCommandInteraction) => {
 		
 		await interaction.editReply(`warning has been logged for user: ${user}`);
 		await interaction.followUp(warningMessage(user));
+
+		//channel.send(warningMessage(user));
+
 		
 	} catch (error) {
 		new ErrorLogger(error, data.name, {user, reason});
