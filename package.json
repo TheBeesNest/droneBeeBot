@@ -8,8 +8,8 @@
     "dev": "nodemon",
     "commands:register": "ts-node src/deployCommands.ts",
     "build": "tsc",
-	"typeorm": "typeorm-ts-node-commonjs",
-	"migration:generate": "npm run typeorm migration:generate -- -d src/dbConnection.ts",
+    "typeorm": "typeorm-ts-node-commonjs",
+    "migration:generate": "npm run typeorm migration:generate -- -d src/dbConnection.ts",
     "migration:run": "npm run typeorm migration:run -- -d src/dbConnection.ts",
     "migration:revert": "npm run typeorm migration:revert -- -d src/dbConnection.ts"
   },
@@ -20,12 +20,14 @@
     "discord.js": "^14.11.0",
     "dotenv": "^16.3.1",
     "mysql2": "^3.5.2",
+    "node-cron": "^3.0.2",
     "reflect-metadata": "^0.1.13",
     "typeorm": "^0.3.17"
   },
   "devDependencies": {
     "@tsconfig/node18": "^18.2.0",
     "@types/node": "^20.4.4",
+    "@types/node-cron": "^3.0.8",
     "nodemon": "^3.0.1",
     "ts-node": "^10.9.1",
     "typescript": "^5.1.6"
