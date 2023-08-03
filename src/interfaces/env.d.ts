@@ -9,5 +9,6 @@ declare namespace NodeJS{
 		dbUsername: string;
 		dbPassword: string;
 		welcome_channel: string;
+		welcome_role: string;
 	}
 }
