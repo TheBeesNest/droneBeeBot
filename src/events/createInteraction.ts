@@ -1,4 +1,5 @@
 import { Events } from 'discord.js';
+import ErrorLogger from '../classes/errorHandling';
 
 export const name = Events.InteractionCreate;
 
@@ -15,7 +16,6 @@ export const execute = async (interaction: any) => {
 	try {
 		await command.execute(interaction);
 	} catch (error) {
-		console.error(`Error executing ${interaction.commandName}`);
-		console.error(error);
+		new ErrorLogger(error, 'initiateInteraction', {command});
 	}
 }
