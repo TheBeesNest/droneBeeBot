@@ -16,6 +16,6 @@ export const execute = async (interaction: any) => {
 	try {
 		await command.execute(interaction);
 	} catch (error) {
-		new ErrorLogger(error, 'initiateInteraction', {command});
+		new ErrorLogger(error, 'initiateInteraction', command);
 	}
 }

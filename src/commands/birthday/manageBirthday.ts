@@ -1,4 +1,6 @@
-import { GuildMember, SlashCommandBuilder } from 'discord.js';
+import { ChatInputCommandInteraction, SlashCommandBuilder, User } from 'discord.js';
+import { Birthday } from '../../entity/birthday';
+import dbSource from '../../dbConnection';
 
 export const data = new SlashCommandBuilder()
 	.setName('birthdays')
@@ -26,12 +28,30 @@ export const data = new SlashCommandBuilder()
 			.setDescription('remove your birthday shoutout')
 			)
 
-export const execute = async (interaction: any) => {
-	const birthDate = interaction.options.getNumber('day');
-	const birthMonth = interaction.options.getNumber('month');
-	const user = interaction.user as GuildMember;
+export const execute = async (interaction: ChatInputCommandInteraction) => {
 
-	console.log(user);
+	if (interaction.options.getSubcommand() === 'add'){
+		await interaction.deferReply({ephemeral: true})
+		
+		const birthDate = interaction.options.getNumber('day');
+		const birthMonth = interaction.options.getNumber('month');
+		const user = interaction.user;
+		
+		const birthdayData = new Birthday();
+		birthdayData.discordID = user.id;
+		birthdayData.birthday = `${birthDate}/${birthMonth}`
 
-	await interaction.reply(`your birthday is ${birthDate}/${birthMonth}`);
+		try {
+			await dbSource.getRepository(Birthday).save(birthdayData);
+			await interaction.editReply('ive logged your birthday');
+		} catch (error) {
+			
+		}
+
+	}
+	else if (interaction.options.getSubcommand() === 'remove') {
+		await interaction.reply('removed');
+	};
+
+
 }
