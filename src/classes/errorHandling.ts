@@ -8,7 +8,7 @@ class ErrorLogger {
 		const entity = new DiscordError;
 
 		entity.command = command;
-		entity.error = error as string;
+		entity.error = JSON.stringify(error) as string;
 		if (variables) {entity.variables = JSON.stringify(variables)};
 
 		dbSource.getRepository(DiscordError).save(entity);
