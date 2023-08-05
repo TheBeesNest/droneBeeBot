@@ -5,7 +5,7 @@
   "main": "./src/main.js",
   "scripts": {
     "start": "npm run migration:run && ts-node src/main.ts",
-    "dev": "nodemon",
+    "dev": "ts-node src/deployCommands.ts && nodemon",
     "commands:register": "ts-node src/deployCommands.ts",
     "build": "tsc",
     "typeorm": "typeorm-ts-node-commonjs",
