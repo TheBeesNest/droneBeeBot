@@ -49,7 +49,6 @@ try {
 	dbSource.initialize().then( () => console.log('DB connected and ready'))
 	client.login(process.env.botApiToken);
 	
-
 } catch (error) {
 	console.log(error);
 	exit(-1);

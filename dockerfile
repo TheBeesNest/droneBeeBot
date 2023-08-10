@@ -1,13 +1,14 @@
-FROM node:lts-alpine AS builder
+FROM --platform=linux/amd64 node:lts-alpine AS builder
 
 WORKDIR /build
 
 COPY . .
 
-RUN npm i --omit=dev
+RUN npm i
 RUN npx tsc
+RUN npm i --omit=dev
 
-FROM node:lts-alpine as app
+FROM --platform=linux/amd64 node:lts-alpine as app
 
 ENV node_env=production
 
@@ -16,6 +17,7 @@ WORKDIR /server
 COPY --from=builder /build/dist /server/
 COPY --from=builder /build/node_modules /server/node_modules
 
+ENV NODE_ENV=production
 ENV botApiToken=
 ENV clientId=
 ENV guildId=
@@ -31,6 +33,4 @@ ENV database=
 ENV dbUsername=
 ENV dbPassword=
 
-RUN npm run migration:run
-
-CMD [ "node","./main.js" ]
+CMD ["node", "./main.js"]
