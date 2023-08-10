@@ -29,15 +29,11 @@ const checkAndCallBirthdays = async (interaction: ChatInputCommandInteraction) =
 				} catch (error) {
 					console.log('error happened, check the DB');
 					new ErrorLogger(error, 'newUserEvent', {user, channel});
-				}
-			
-			}
-		}
-
-	}
-
-
-}
+				};
+			};
+		};
+	};
+};
 
 const getCurrentDate = () => {
 	const today = new Date();
@@ -45,13 +41,14 @@ const getCurrentDate = () => {
 	let dd = today.getDate();
 	if (dd < 10) {
 		const data: any = ['0', dd];
-		dd = data.join('');};
+		dd = data.join('');
+	};
 	if (mm < 10) {
 		const data: any = ['0', mm];
 		mm = data.join('');
 	};
 	return [dd, mm];
-}
+};
 
 export default checkAndCallBirthdays
 
