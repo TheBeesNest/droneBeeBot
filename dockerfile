@@ -6,7 +6,6 @@ COPY . .
 
 RUN npm i
 RUN npx tsc
-RUN npm i --omit=dev
 
 FROM --platform=linux/amd64 node:lts-alpine as app
 

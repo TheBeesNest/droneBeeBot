@@ -17,7 +17,7 @@ const commandFolders = fs.readdirSync(foldersPath);
 
 for (const folder of commandFolders) {
 	const commandsPath = path.join(foldersPath, folder);
-	const commandFiles = fs.readdirSync(commandsPath).filter(file => file.endsWith('.ts'));
+	const commandFiles = fs.readdirSync(commandsPath);
 	for (const file of commandFiles) {
 		const filePath = path.join(commandsPath, file);
 		const command = require(filePath);
@@ -32,7 +32,7 @@ for (const folder of commandFolders) {
 
 //searching for all events and creating/registering the event handlers
 const eventsPath = path.join(__dirname, 'events');
-const eventFiles = fs.readdirSync(eventsPath).filter(file => file.endsWith('.ts'));
+const eventFiles = fs.readdirSync(eventsPath);
 
 for (const file of eventFiles) {
 	const filePath = path.join(eventsPath, file);

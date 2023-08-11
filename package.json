@@ -4,7 +4,7 @@
   "description": "",
   "main": "./src/main.js",
   "scripts": {
-    "start": "npm run migration:run && ts-node src/main.ts",
+    "start": "node dist/main.js",
     "dev": "ts-node src/deployCommands.ts && nodemon",
     "commands:register": "ts-node src/deployCommands.ts",
     "build": "tsc",
