@@ -32,4 +32,4 @@ ENV database=
 ENV dbUsername=
 ENV dbPassword=
 
-CMD ["node", "./main.js"]
+CMD node main.js
