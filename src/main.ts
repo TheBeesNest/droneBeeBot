@@ -5,6 +5,9 @@ import * as path from 'path';
 import { exit } from 'process';
 import { ExtendedClient } from './classes/extClient';
 import dbSource from './dbConnection';
+import cron from 'node-cron';
+import checkAndCallBirthdays from './functions/checkBirthdays';
+
 
 console.log('starting up Bot!')
 
@@ -48,6 +51,8 @@ for (const file of eventFiles) {
 try {
 	dbSource.initialize().then( () => console.log('DB connected and ready'))
 	client.login(process.env.botApiToken);
+	cron.schedule('0 1 0 * * *', () => checkAndCallBirthdays(client));
+
 	
 } catch (error) {
 	console.log(error);

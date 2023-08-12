@@ -2,18 +2,29 @@ import { ChatInputCommandInteraction, TextChannel } from 'discord.js';
 import dbSource from '../dbConnection'
 import { Birthday } from '../entity/birthday'
 import ErrorLogger from '../classes/errorHandling';
+import { channel } from 'diagnostics_channel';
+import { ExtendedClient } from '../classes/extClient';
 
-const checkAndCallBirthdays = async (interaction: ChatInputCommandInteraction) => {
-	const channel = interaction.client.channels.cache.get(process.env.welcome_channel as string) as TextChannel;
+const checkAndCallBirthdays = async (interaction: ExtendedClient) => {
 
+	const channel = await interaction.channels.cache.get('1096178427767296080') as TextChannel;
+
+	try{
+	} catch(error) {
+
+		console.log(error);
+	}
+	
+	
 	const birthdayList = await dbSource.getRepository(Birthday).find();
 	const currentDate = getCurrentDate();
-
+	
 	for(let birthday of birthdayList) {
+		
 		const user = birthday.discordID;
 		const birthDayAndMonth = birthday.birthday.split('/');
 		const formattedBirthday: string[] = [];
-
+		
 		for (let entry of birthDayAndMonth) {
 			if (entry.length < 2) {
 				formattedBirthday.push(`0${entry}`);
@@ -21,14 +32,13 @@ const checkAndCallBirthdays = async (interaction: ChatInputCommandInteraction) =
 				formattedBirthday.push(entry);
 			};
 		};
-
-		if (Number(formattedBirthday[1]) === currentDate[1]) {
-			if (Number(formattedBirthday[0]) === currentDate[0]) {
+		if (Number(formattedBirthday[1]) == currentDate[1]) {
+			if (Number(formattedBirthday[0]) == currentDate[0]) {
 				try {
 					await channel.send(`happy birthday <@${user}>`);
 				} catch (error) {
 					console.log('error happened, check the DB');
-					new ErrorLogger(error, 'newUserEvent', {user, channel});
+					new ErrorLogger(error, 'newUserEvent', {user});
 				};
 			};
 		};
