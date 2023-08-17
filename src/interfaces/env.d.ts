@@ -10,6 +10,6 @@ declare namespace NodeJS{
 		dbPassword: string;
 		welcome_channel: string;
 		welcome_role: string;
-		birthday_role: string;
+		birthday_channel: string;
 	}
 }

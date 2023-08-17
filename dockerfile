@@ -22,7 +22,7 @@ ENV clientId=
 ENV guildId=
 ENV welcome_channel=
 ENV welcome_role=
-ENV birthday_role=
+ENV birthday_channel=
 
 #db settings
 

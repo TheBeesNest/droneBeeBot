@@ -51,7 +51,7 @@ for (const file of eventFiles) {
 try {
 	dbSource.initialize().then( () => console.log('DB connected and ready'))
 	client.login(process.env.botApiToken);
-	cron.schedule('0 1 0 * * *', () => checkAndCallBirthdays(client));
+	cron.schedule('0 5 17 * * *', () => checkAndCallBirthdays(client));
 
 	
 } catch (error) {

@@ -7,7 +7,7 @@ import { ExtendedClient } from '../classes/extClient';
 
 const checkAndCallBirthdays = async (interaction: ExtendedClient) => {
 
-	const channel = await interaction.channels.cache.get('1096178427767296080') as TextChannel;
+	const channel = await interaction.channels.cache.get(process.env.birthday_channel) as TextChannel;
 
 	try{
 	} catch(error) {
