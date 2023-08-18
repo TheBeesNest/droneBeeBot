@@ -2,24 +2,18 @@ import { ChatInputCommandInteraction, TextChannel } from 'discord.js';
 import dbSource from '../dbConnection'
 import { Birthday } from '../entity/birthday'
 import ErrorLogger from '../classes/errorHandling';
-import { channel } from 'diagnostics_channel';
 import { ExtendedClient } from '../classes/extClient';
 
 const checkAndCallBirthdays = async (interaction: ExtendedClient) => {
+	console.log('checking birthdays')
 
-	const channel = await interaction.channels.cache.get(process.env.birthday_channel) as TextChannel;
-
-	try{
-	} catch(error) {
-
-		console.log(error);
-	}
-	
+	const channel = await interaction.channels.cache.get(process.env.birthday_channel as string) as TextChannel;
 	
 	const birthdayList = await dbSource.getRepository(Birthday).find();
 	const currentDate = getCurrentDate();
 	
 	for(let birthday of birthdayList) {
+		console.log('checking found bday')
 		
 		const user = birthday.discordID;
 		const birthDayAndMonth = birthday.birthday.split('/');
@@ -35,6 +29,7 @@ const checkAndCallBirthdays = async (interaction: ExtendedClient) => {
 		if (Number(formattedBirthday[1]) == currentDate[1]) {
 			if (Number(formattedBirthday[0]) == currentDate[0]) {
 				try {
+					console.log('sending message')
 					await channel.send(`happy birthday <@${user}>`);
 				} catch (error) {
 					console.log('error happened, check the DB');

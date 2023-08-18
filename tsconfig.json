@@ -1,7 +1,7 @@
 {
 	"compilerOptions": {
-		"target": "ESNext",
-		"module": "commonjs",
+		"target": "ES2017",
+		"module": "Node16",
 		"rootDir": "./src/",
 		"outDir": "./dist/",
 		"strict": true,
