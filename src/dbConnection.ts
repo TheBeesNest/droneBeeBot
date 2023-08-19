@@ -9,7 +9,7 @@ const dbSource = new DataSource({
 	username: process.env.dbUsername,
 	password: process.env.dbPassword,
 	entities: ['src/entity/*.ts', './entity/*.*'],
-	migrations: ['./migration/*.*'],
+	migrations: ['src/migration/*.ts'],
 
 })
 
