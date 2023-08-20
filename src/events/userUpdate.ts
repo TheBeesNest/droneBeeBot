@@ -1,30 +1,33 @@
 import { Events, GuildMember } from 'discord.js';
+import ErrorLogger from '../classes/errorHandling';
 import dbSource from '../dbConnection';
 import { User } from '../entity';
-import ErrorLogger from '../classes/errorHandling';
 
 export const name = Events.GuildMemberUpdate;
 
-export const execute = async (interaction: any) => {
-	const userEvent = interaction as GuildMember;
+export const execute = async (oldData: GuildMember, newData: GuildMember) => {
+	console.log(oldData)
+	console.log(newData)
 	
 	const userUpdate = new User;
 	const userData = dbSource.getRepository(User);
-	const userAccount = await userData.findOne({where: {discordId: userEvent.user.id}});
+	const userAccount = await userData.findOne({where: {discordId: oldData.user.id}});
 
 	if (userAccount !== null) {userUpdate.id = userAccount.id}
 
-	if (userUpdate.discordUsername === userEvent.displayName) {
-		userUpdate.discordUsername = userEvent.user.displayName;
+	if (oldData.nickname === newData.nickname) { 
+		return
+	} else if (newData.nickname === null) {
+		userUpdate.discordUsername = newData.displayName;
 	} else {
-		userUpdate.discordUsername = userEvent.displayName;
+		userUpdate.discordUsername = newData.nickname;
 	}
-	userUpdate.discordId = userEvent.user.id;
+	userUpdate.discordId = oldData.user.id;
 
 	try{
 		await userData.save(userUpdate);
 	} catch(error) {
-		new ErrorLogger(error, 'updateUserEvent', {userEvent, userUpdate, userData});
+		new ErrorLogger(error, 'updateUserEvent', {oldData, newData, userUpdate, userData});
 	}
 
 };
