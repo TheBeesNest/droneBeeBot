@@ -1,4 +1,5 @@
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, Entity, JoinColumn, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
+import { Point } from './point';
 
 @Entity()
 export class User {
@@ -16,4 +17,7 @@ export class User {
 		nullable: false
 	})
 	discordUsername: string;
+
+	@OneToMany(() => Point, point => point.userId)
+	awardedPoints: Point[];
 }

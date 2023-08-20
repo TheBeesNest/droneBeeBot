@@ -1,18 +1,33 @@
-import { ActivityType, GatewayIntentBits } from 'discord.js';
+import { ActivityType, GatewayIntentBits, Partials } from 'discord.js';
 import 'dotenv/config';
 import * as fs from 'fs';
+import cron from 'node-cron';
 import * as path from 'path';
 import { exit } from 'process';
 import { ExtendedClient } from './classes/extClient';
 import dbSource from './dbConnection';
-import cron from 'node-cron';
 import checkAndCallBirthdays from './functions/checkBirthdays';
 
 
 console.log('starting up Bot!')
 
-const client = new ExtendedClient({ intents: [GatewayIntentBits.Guilds, GatewayIntentBits.GuildMembers],
-	presence: {activities: [{name: 'the hive for bad bees', type: ActivityType.Watching}]},});
+const client = new ExtendedClient({ 
+	intents: [
+		GatewayIntentBits.Guilds,
+		GatewayIntentBits.GuildMembers,
+		GatewayIntentBits.GuildMessages,
+		GatewayIntentBits.MessageContent,
+	],
+	partials: [
+		Partials.Channel,
+		Partials.GuildMember,
+		Partials.GuildScheduledEvent,
+		Partials.Message,
+		Partials.Reaction,
+		Partials.User
+	],
+	presence: {activities: [{name: 'the hive for bad bees', type: ActivityType.Watching}]},
+});
 
 //searching through the commands list and building an array of all commands.
 const foldersPath = path.join(__dirname, 'commands');

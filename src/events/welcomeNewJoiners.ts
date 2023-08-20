@@ -5,10 +5,10 @@ import { User } from '../entity';
 
 export const name = Events.GuildMemberAdd;
 
-export const execute = async (interaction: any) => {
-	const user = interaction.user as GuildMember
+export const execute = async (interaction: GuildMember) => {
+	const user = interaction.user
 	const role = interaction.guild.roles.cache.find((role: Role) => role.name === process.env.welcome_role) as Role;
-	const channel = interaction.client.channels.cache.get(process.env.welcome_channel) as TextChannel;
+	const channel = interaction.client.channels.cache.get(process.env.welcome_channel as string) as TextChannel;
 
 	try {
 		await interaction.roles.add(role);
