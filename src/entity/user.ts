@@ -1,4 +1,4 @@
-import { Column, Entity, ManyToOne, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, Entity, JoinColumn, ManyToOne, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
 import { House } from './house';
 import { Point } from './point';
 
@@ -20,6 +20,7 @@ export class User {
 	discordUsername: string;
 
 	@ManyToOne(() => House, house => house.userId)
+	@JoinColumn({name: 'house_id'})
 	houseId: House;
 
 	@OneToMany(() => Point, point => point.userAwarded)
