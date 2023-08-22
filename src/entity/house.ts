@@ -1,4 +1,5 @@
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
+import { User } from './user';
 
 @Entity()
 export class House {
@@ -15,5 +16,8 @@ export class House {
 		nullable: true,
 	})
 	colour?: string;
+
+	@OneToMany(() => User, user => user.houseId)
+	userId: User[]
 
 }

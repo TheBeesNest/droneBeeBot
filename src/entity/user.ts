@@ -1,4 +1,5 @@
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
+import { House } from './house';
 
 @Entity()
 export class User {
@@ -16,4 +17,7 @@ export class User {
 		nullable: false,
 	})
 	discordUsername: string;
+
+	@ManyToOne(() => House, house => house.userId)
+	houseId: House;
 }
