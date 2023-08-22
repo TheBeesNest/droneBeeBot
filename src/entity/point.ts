@@ -1,6 +1,7 @@
 
 import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
 import { User } from './user';
+import { House } from './house';
 
 @Entity()
 export class Point {
@@ -12,7 +13,7 @@ export class Point {
 		nullable: false
 	})
 	@ManyToOne(() => User, user => user.awardedPoints, {cascade: true})
-	userId: number;
+	userId: User;
 
 	@Column({
 		name: 'points_awarded',
@@ -27,5 +28,11 @@ export class Point {
 	})
 	dateTimeAwarded: Date;
 
-	
+	@Column({
+		name: 'house_awarded',
+		nullable: false,
+	})
+	houseAwarded: House;
+
+
 }
