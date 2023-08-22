@@ -8,7 +8,7 @@ export const name = Events.GuildMemberUpdate;
 export const execute = async (oldData: GuildMember, newData: GuildMember) => {
 	console.log(oldData)
 	console.log(newData)
-	
+
 	const userUpdate = new User;
 	const userData = dbSource.getRepository(User);
 	const userAccount = await userData.findOne({where: {discordId: oldData.user.id}});
@@ -31,4 +31,3 @@ export const execute = async (oldData: GuildMember, newData: GuildMember) => {
 	}
 
 };
-	

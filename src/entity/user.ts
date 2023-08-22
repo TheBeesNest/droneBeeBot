@@ -1,6 +1,4 @@
-import { Column, Entity, JoinColumn, ManyToOne, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
-import { Point } from './point';
-import { House } from './house';
+import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
 
 @Entity()
 export class User {
@@ -9,23 +7,13 @@ export class User {
 
 	@Column({
 		name: 'discord_id',
-		nullable: false
+		nullable: false,
 	})
 	discordId: string;
 
 	@Column({
 		name: 'discord_username',
-		nullable: false
+		nullable: false,
 	})
 	discordUsername: string;
-
-	@Column({
-		name: 'house_id',
-		nullable: true,
-	})
-	@ManyToOne(() => House, house => house.userId)
-	houseId?: House;
-
-	@OneToMany(() => Point, point => point.userId)
-	awardedPoints: Point[];
 }

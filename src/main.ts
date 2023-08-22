@@ -11,7 +11,7 @@ import checkAndCallBirthdays from './functions/checkBirthdays';
 
 console.log('starting up Bot!')
 
-const client = new ExtendedClient({ 
+const client = new ExtendedClient({
 	intents: [
 		GatewayIntentBits.Guilds,
 		GatewayIntentBits.GuildMembers,
@@ -73,7 +73,6 @@ try {
 	dbSource.initialize().then( () => console.log('DB connected and ready'))
 	cron.schedule('0 0 2 * * *', () => checkAndCallBirthdays(client));
 	client.login(process.env.botApiToken);
-	
 } catch (error) {
 	console.log(error);
 	exit(-1);
