@@ -4,7 +4,7 @@ export const data = new SlashCommandBuilder()
 	.setName('addrole')
 	.setDescription('use the commands to set a role against a user')
 	.setDefaultMemberPermissions(PermissionFlagsBits.ManageRoles)
-	.addUserOption(option => 
+	.addUserOption(option =>
 		option.setName('user')
 			.setDescription('give the user to have a role added')
 			.setRequired(true))
@@ -19,5 +19,5 @@ export const execute = (interaction: ChatInputCommandInteraction) => {
 
 	user.roles.add(role)
 	interaction.reply(`${user} has the new title of ${role}`);
-	
+
 }

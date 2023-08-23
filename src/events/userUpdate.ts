@@ -15,7 +15,7 @@ export const execute = async (oldData: GuildMember, newData: GuildMember) => {
 
 	if (userAccount !== null) {userUpdate.id = userAccount.id}
 
-	if (oldData.nickname === newData.nickname) { 
+	if (oldData.nickname === newData.nickname) {
 		return
 	} else if (newData.nickname === null) {
 		userUpdate.discordUsername = newData.displayName;
