@@ -18,6 +18,9 @@ export class House {
 	})
 	colour?: string;
 
+	@Column()
+	role: string;
+
 	@OneToMany(() => User, user => user.houseId)
 	userId: User[]
 
