@@ -18,8 +18,11 @@ export class House {
 	})
 	colour?: string;
 
-	@Column()
-	role: string;
+	@Column({
+		type: 'varchar',
+		nullable: true,
+	})
+	role: string | null;
 
 	@OneToMany(() => User, user => user.houseId)
 	userId: User[]

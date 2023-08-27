@@ -21,7 +21,7 @@ export class User {
 
 	@ManyToOne(() => House, house => house.userId)
 	@JoinColumn({name: 'house_id'})
-	houseId: House;
+	houseId: House | null;
 
 	@OneToMany(() => Point, point => point.userAwarded)
 	pointIds: Point[]
