@@ -7,21 +7,25 @@ export const name = Events.MessageCreate;
 
 export const execute = async (interaction: Message) => {
 	const messageUser = interaction.author;
-	const userDetails = await dbSource.getRepository(User).findOne({where: {discordId: messageUser.id}});
+	const userDetails = await dbSource.getRepository(User).findOne({
+		where: {discordId: messageUser.id},
+		relations: {houseId: true}
+	});
 
-	if (userDetails === null || userDetails?.houseId === null) { return };
+	if (userDetails === null || userDetails.houseId === null) { return };
 
 	const pointSource = dbSource.getRepository(Point);
+	const houseData = await dbSource.getRepository(House).findOne({where: {id: userDetails.houseId.id}})
+
 	const pointAllocation = new Point();
 
 	pointAllocation.userAwarded = userDetails;
 	pointAllocation.pointsAwarded = 1;
-	pointAllocation.houseAwarded = userDetails.houseId as House;
+	pointAllocation.houseAwarded = houseData as House;
 
 	try {
 		await pointSource.save(pointAllocation);
 	} catch (error) {
 		new ErrorLogger(error, 'messageReceived.savePoint', {interaction, userDetails})
-	}
-
+	};
 };
