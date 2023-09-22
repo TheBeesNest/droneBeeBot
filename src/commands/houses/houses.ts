@@ -2,13 +2,8 @@ import { ChatInputCommandInteraction, GuildMember, PermissionFlagsBits, Role, Sl
 import dbSource from '../../dbConnection';
 import { House, User } from '../../entity';
 import ErrorLogger from '../../classes/errorHandling';
+import { houseList } from '../../constants';
 
-const houseList = [
-	{name: 'Honeysting', value: 'Honeysting'},
-	{name: 'Pollenmason', value: 'Pollenmason'},
-	{name: 'Carderflight', value: 'Carderflight'},
-	{name: 'Bumblebutt', value: 'Bumblebutt'}
-]
 
 export const data = new SlashCommandBuilder()
 	.setName('houses')

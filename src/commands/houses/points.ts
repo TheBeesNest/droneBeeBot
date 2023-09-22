@@ -40,7 +40,23 @@ export const data = new SlashCommandBuilder()
 					.setDescription('amount of points to remove (enter a positive value)')
 					.setRequired(true)
 			)
-	);
+	)
+	.addSubcommandGroup( group =>
+		group
+			.setName('tally')
+			.setDescription('lol')
+			.addSubcommand( subcommand =>
+				subcommand
+					.setName('house')
+					.setDescription('tally all the points for a house')
+					.addStringOption( option =>
+						option
+							.setName('house')
+							.setDescription('select house to check total points')
+							.setChoices()
+					)
+			)
+	)
 
 
 export const execute = async (interaction: ChatInputCommandInteraction) => {

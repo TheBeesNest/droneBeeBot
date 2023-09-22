@@ -2,7 +2,6 @@
   "name": "dronebeebot",
   "version": "0.0.1",
   "description": "",
-  "main": "./src/main.js",
   "scripts": {
     "start": "node dist/main.js",
     "dev": "ts-node src/deployCommands.ts && nodemon",
@@ -10,8 +9,10 @@
     "build": "tsc",
     "typeorm": "typeorm-ts-node-commonjs",
     "migration:generate": "npm run typeorm migration:generate -- -d src/dbConnection.ts",
+    "migration:create": "npm run typeorm migration:create --",
     "migration:run": "npm run typeorm migration:run -- -d src/dbConnection.ts",
     "migration:revert": "npm run typeorm migration:revert -- -d src/dbConnection.ts",
+    "production:migration:revert": "npm run typeorm migration:revert -- -d src/prodConnection.ts",
     "production:migration:run": "npm run typeorm migration:run -- -d src/prodConnection.ts",
 	"production:command:update": "ts-node src/prodCommands.ts"
   },
