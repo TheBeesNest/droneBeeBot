@@ -30,7 +30,7 @@ const checkAndCallBirthdays = async (interaction: ExtendedClient) => {
 			if (Number(formattedBirthday[0]) == currentDate[0]) {
 				try {
 					console.log('sending message')
-					await channel.send(`happy birthday <@${user}>`);
+					await channel.send(`happy birthday to the fantastic <@${user}>`);
 				} catch (error) {
 					console.log('error happened, check the DB');
 					new ErrorLogger(error, 'newUserEvent', {user});
