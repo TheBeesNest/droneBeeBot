@@ -2,6 +2,7 @@ import { ChatInputCommandInteraction, GuildMember, PermissionFlagsBits, SlashCom
 import dbSource from '../../dbConnection';
 import { House, Point, User } from '../../entity';
 import ErrorLogger from '../../classes/errorHandling';
+import { FindOptionsWhere } from 'typeorm';
 
 export const data = new SlashCommandBuilder()
 	.setName('points')
@@ -44,7 +45,7 @@ export const data = new SlashCommandBuilder()
 	.addSubcommandGroup( group =>
 		group
 			.setName('tally')
-			.setDescription('lol')
+			.setDescription('total up the points and show who is in what position')
 			.addSubcommand( subcommand =>
 				subcommand
 					.setName('house')
@@ -55,6 +56,11 @@ export const data = new SlashCommandBuilder()
 							.setDescription('select house to check total points')
 							.setChoices()
 					)
+			)
+			.addSubcommand( subcommand =>
+				subcommand
+					.setName('users')
+					.setDescription('tally to top contributors of points')
 			)
 	)
 
@@ -75,7 +81,7 @@ export const execute = async (interaction: ChatInputCommandInteraction) => {
 	if (userData === null || userData.houseId == null) {
 		await interaction.editReply(`Something's gone wrong, contact @choccobear`);
 		new ErrorLogger('userData = null', 'points#preFlightChecks', {userData, user});
-		return
+		return;
 	};
 	const houseData = await dbSource.getRepository(House).findOne({where: {id: userData.houseId.id}});
 
@@ -105,5 +111,17 @@ export const execute = async (interaction: ChatInputCommandInteraction) => {
 		} catch (error) {
 			new ErrorLogger(error, 'points#punishPoints', {pointsData, userData, points});
 		}
-	};
+	} else if (commandSelected === 'house') {
+		const houseSelected = interaction.options.getString('house') as string;
+
+		const houseObj = await dbSource.getRepository(House).findOne({where: {name: houseSelected}});
+
+		if (houseObj === null){
+			return;
+		}
+// TODO - add grabbing all points for teh selected house
+// im unsure how im supposed to do this, as the find will not filter on related fields
+// i think i need to use teh query builder - will need to research how to use it...
+
+	}
 };
