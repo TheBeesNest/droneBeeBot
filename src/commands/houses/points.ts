@@ -2,6 +2,7 @@ import { ChatInputCommandInteraction, GuildMember, PermissionFlagsBits, SlashCom
 import dbSource from '../../dbConnection';
 import { House, Point, User } from '../../entity';
 import ErrorLogger from '../../classes/errorHandling';
+import { houseList } from '../../constants';
 
 export const data = new SlashCommandBuilder()
 	.setName('points')
@@ -53,7 +54,8 @@ export const data = new SlashCommandBuilder()
 						option
 							.setName('house')
 							.setDescription('select house to check total points')
-							.setChoices()
+							.setChoices(...houseList)
+							.setRequired(true)
 					)
 			)
 			.addSubcommand( subcommand =>
@@ -141,24 +143,27 @@ const pointTallyingLogic = async (interaction: ChatInputCommandInteraction): Pro
 
 	const pointsRepo = dbSource.getRepository(Point);
 
-
-
 	if (commandSelected === 'house') {
 		const houseSelected = interaction.options.getString('house') as string;
 
 		const houseObj = await dbSource.getRepository(House).findOne({where: {name: houseSelected}});
-
 		if (houseObj === null){
 			return;
 		}
 
-		const pointsForHouse = await pointsRepo
-		.createQueryBuilder('point') // Replace 'entity' with the alias for your entity in the query.
-		.leftJoinAndSelect('point.house', 'id') // Replace 'relatedField' with the actual related field name.
-		.where('house.id = :houseId', { houseId: houseObj.id })
-		.getMany();
+		try{
+			const pointsForHouse = await pointsRepo
+			.createQueryBuilder('point') // Replace 'entity' with the alias for your entity in the query.
+			.leftJoin('point.houseAwarded', 'house')
+			.leftJoinAndSelect('point.userAwarded', 'user') // Replace 'relatedField' with the actual related field name.
+			.where('house.id = :houseId', { houseId: houseObj.id })
+			.getMany();
 
-		await interaction.editReply('house');
+			await interaction.editReply('house');
+			console.log(pointsForHouse);
+		} catch (error) {
+			console.log(error);
+		}
 
 	}
 
