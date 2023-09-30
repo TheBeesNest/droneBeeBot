@@ -2,6 +2,7 @@ import { Events, Message } from 'discord.js';
 import ErrorLogger from '../classes/errorHandling';
 import dbSource from '../dbConnection';
 import { House, Point, User } from '../entity';
+import { addUserToDatabase } from '../functions';
 
 export const name = Events.MessageCreate;
 
@@ -12,7 +13,11 @@ export const execute = async (interaction: Message) => {
 		relations: {houseId: true}
 	});
 
-	if (userDetails === null || userDetails.houseId === null) { return };
+	if (userDetails === null) {
+		await addUserToDatabase(messageUser);
+		return;
+	}
+	if (userDetails.houseId === null) { return };
 
 	const pointSource = dbSource.getRepository(Point);
 	const houseData = await dbSource.getRepository(House).findOne({where: {id: userDetails.houseId.id}})

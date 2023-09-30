@@ -96,7 +96,6 @@ export const execute = async (interaction: ChatInputCommandInteraction) => {
 		new ErrorLogger('house Missing', 'houses#saveRoleToHouse');
 		return;
 	};
-
 	if (commandGroupSelected === 'roles') {
 
 		if (commandSelected === 'assign') {
@@ -119,7 +118,11 @@ export const execute = async (interaction: ChatInputCommandInteraction) => {
 			}
 		}
 	} else if (commandGroupSelected === 'users') {
-		if (interaction.guild === null || houseData.role === null) { return };
+		if (interaction.guild === null || houseData.role === null) {
+			await interaction.editReply(`Something's gone wrong, contact @choccobear`);
+			new ErrorLogger('missing data', 'houses#preFlightChecks',  {role: houseData.role});
+			return;
+		};
 
 		const role = interaction.guild.roles.cache.find((role: Role) => role.name === houseData.role) as Role;
 		const userRepo = dbSource.getRepository(User);
@@ -164,7 +167,7 @@ export const execute = async (interaction: ChatInputCommandInteraction) => {
 					commandGroupSelected,
 					commandSelected
 				});
-			}
-		}
-	}
-}
+			};
+		};
+	};
+};

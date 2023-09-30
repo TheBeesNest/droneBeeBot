@@ -2,7 +2,6 @@ import { ChatInputCommandInteraction, GuildMember, PermissionFlagsBits, SlashCom
 import dbSource from '../../dbConnection';
 import { House, Point, User } from '../../entity';
 import ErrorLogger from '../../classes/errorHandling';
-import { FindOptionsWhere } from 'typeorm';
 
 export const data = new SlashCommandBuilder()
 	.setName('points')
@@ -66,13 +65,31 @@ export const data = new SlashCommandBuilder()
 
 
 export const execute = async (interaction: ChatInputCommandInteraction) => {
+	const subcommandGroup = interaction.options.getSubcommandGroup();
+
+	await interaction.deferReply();
+
+	switch (subcommandGroup) {
+		case 'tally':
+			await pointTallyingLogic(interaction);
+			return;
+		case null:
+			await pointAllocationLogic(interaction);
+			return;
+		default:
+			break;
+	}
+};
+
+
+const pointAllocationLogic = async (interaction: ChatInputCommandInteraction): Promise<void> => {
 	const user = interaction.options.getMember('user') as GuildMember;
 	const points = interaction.options.getNumber('points') as number;
 	const commandSelected = interaction.options.getSubcommand();
 
-	await interaction.deferReply();
-
 	const pointsRepo = dbSource.getRepository(Point);
+
+
 	const userData = await dbSource.getRepository(User).findOne({
 		where: {discordId: user.id},
 		relations: {houseId: true}
@@ -80,10 +97,14 @@ export const execute = async (interaction: ChatInputCommandInteraction) => {
 
 	if (userData === null || userData.houseId == null) {
 		await interaction.editReply(`Something's gone wrong, contact @choccobear`);
+		await interaction.followUp({ content: `the likely cause is that the user isn't assigned a house, try that and call the boss if i still cant do it`,
+									ephemeral: true
+								});
 		new ErrorLogger('userData = null', 'points#preFlightChecks', {userData, user});
 		return;
 	};
 	const houseData = await dbSource.getRepository(House).findOne({where: {id: userData.houseId.id}});
+
 
 
 	if (commandSelected === 'award') {
@@ -110,8 +131,19 @@ export const execute = async (interaction: ChatInputCommandInteraction) => {
 			await interaction.editReply('punished');
 		} catch (error) {
 			new ErrorLogger(error, 'points#punishPoints', {pointsData, userData, points});
-		}
-	} else if (commandSelected === 'house') {
+		};
+	};
+};
+
+
+const pointTallyingLogic = async (interaction: ChatInputCommandInteraction): Promise<void> => {
+	const commandSelected = interaction.options.getSubcommand();
+
+	const pointsRepo = dbSource.getRepository(Point);
+
+
+
+	if (commandSelected === 'house') {
 		const houseSelected = interaction.options.getString('house') as string;
 
 		const houseObj = await dbSource.getRepository(House).findOne({where: {name: houseSelected}});
@@ -119,9 +151,16 @@ export const execute = async (interaction: ChatInputCommandInteraction) => {
 		if (houseObj === null){
 			return;
 		}
-// TODO - add grabbing all points for teh selected house
-// im unsure how im supposed to do this, as the find will not filter on related fields
-// i think i need to use teh query builder - will need to research how to use it...
+
+		const pointsForHouse = await pointsRepo
+		.createQueryBuilder('point') // Replace 'entity' with the alias for your entity in the query.
+		.leftJoinAndSelect('point.house', 'id') // Replace 'relatedField' with the actual related field name.
+		.where('house.id = :houseId', { houseId: houseObj.id })
+		.getMany();
+
+		await interaction.editReply('house');
 
 	}
-};
+
+
+}
