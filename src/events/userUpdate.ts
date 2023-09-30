@@ -6,8 +6,6 @@ import { User } from '../entity';
 export const name = Events.GuildMemberUpdate;
 
 export const execute = async (oldData: GuildMember, newData: GuildMember) => {
-	console.log(oldData)
-	console.log(newData)
 
 	const userUpdate = new User;
 	const userData = dbSource.getRepository(User);
