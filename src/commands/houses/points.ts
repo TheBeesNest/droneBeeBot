@@ -247,19 +247,18 @@ const pointTallyingLogic = async (interaction: ChatInputCommandInteraction): Pro
 				if (topUsers.some(user => user.name === point.userAwarded.discordUsername)) {
 					const userIndex = topUsers.findIndex(user => user.name === point.userAwarded.discordUsername);
 					topUsers[userIndex].points += point.pointsAwarded;
-				  } else {
-					topUsers.push({name: point.userAwarded.discordUsername, points: point.pointsAwarded})
-				  }
+				} else {
+					topUsers.push({name: point.userAwarded.discordUsername, points: point.pointsAwarded});
+				}
 			}
+			console.log(pointsTotal);
 			const finalHouse = topHouses.sort((a, b) => b.value - a.value);
 			const finalUsers = topUsers.sort((a, b) => b.points - a.points);
 
-			console.log(finalHouse, finalUsers);
-
-			interaction.editReply(`userr.`);
+			interaction.editReply(finalTallyString(finalHouse, finalUsers));
 
 			try {
-				await pointsRepo.softRemove(pointsList)
+				//await pointsRepo.softRemove(pointsList)
 			} catch (error) {
 				console.log(error);
 			}
@@ -272,4 +271,28 @@ const pointTallyingLogic = async (interaction: ChatInputCommandInteraction): Pro
 
 
 
+}
+
+const finalTallyString = (houseList: any, localUserList: IUserPointList[]) => {
+	console.log(localUserList);
+	return `
+So its that time, where we see how good everyone has been.
+Lets have a look at the house standings!
+
+		1st   🥇 - House ${houseList[0].name}
+		2nd 🥈 - House ${houseList[1].name}
+		3rd  🥉 - House ${houseList[2].name}
+		4th  🎖️ - House ${houseList[3].name}
+
+Well done to all the houses for your contributions.
+Next lets see whose been the most active in the community.
+
+	1st   🥇 - ${localUserList[0].name}
+	2nd 🥈 - ${localUserList[1].name}
+	3rd  🥉 - ${localUserList[2].name}
+
+
+
+
+	`
 }

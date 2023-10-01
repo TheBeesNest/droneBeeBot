@@ -130,7 +130,7 @@ export const execute = async (interaction: ChatInputCommandInteraction) => {
 
 		if (userData === null) {
 			interaction.editReply(`I've not seen this user before, get them talking and then we can give them a house.`);
-			new ErrorLogger('unknown user', 'houses#saveRoleToHouse');
+			new ErrorLogger('unknown user', 'houses#saveRoleToHouse',{userData});
 			return;
 		}
 
