@@ -251,9 +251,18 @@ const pointTallyingLogic = async (interaction: ChatInputCommandInteraction): Pro
 					topUsers.push({name: point.userAwarded.discordUsername, points: point.pointsAwarded})
 				  }
 			}
-			console.log(topHouses, topUsers);
+			const finalHouse = topHouses.sort((a, b) => b.value - a.value);
+			const finalUsers = topUsers.sort((a, b) => b.points - a.points);
+
+			console.log(finalHouse, finalUsers);
 
 			interaction.editReply(`userr.`);
+
+			try {
+				await pointsRepo.softRemove(pointsList)
+			} catch (error) {
+				console.log(error);
+			}
 
 		} catch (error) {
 			console.log(error);
