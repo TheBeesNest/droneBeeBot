@@ -1,4 +1,4 @@
-import { Column, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, DeleteDateColumn, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
 import { User } from './user';
 import { House } from './house';
 
@@ -27,4 +27,7 @@ export class Point {
 		default: () => 'NOW()'
 	})
 	dateTimeAwarded: Date;
+
+	@DeleteDateColumn()
+	deletedAt: Date;
 }
