@@ -3,6 +3,7 @@ import dbSource from '../../dbConnection';
 import { House, Point, User } from '../../entity';
 import ErrorLogger from '../../classes/errorHandling';
 import { houseList } from '../../constants';
+import { IUserPointList } from '../../interfaces/userPointObject';
 
 export const data = new SlashCommandBuilder()
 	.setName('points')
@@ -60,9 +61,20 @@ export const data = new SlashCommandBuilder()
 			)
 			.addSubcommand( subcommand =>
 				subcommand
-					.setName('users')
+					.setName('user')
 					.setDescription('tally to top contributors of points')
+					.addUserOption( option =>
+						option
+							.setName('user')
+							.setDescription('username of person to check')
+							.setRequired(true)
+						)
 			)
+			.addSubcommand( subcommand =>
+				subcommand
+					.setName('final_scores')
+					.setDescription('read the final scored from the last reading to now, this will clear all read scores')
+				)
 	)
 
 
@@ -159,13 +171,96 @@ const pointTallyingLogic = async (interaction: ChatInputCommandInteraction): Pro
 			.where('house.id = :houseId', { houseId: houseObj.id })
 			.getMany();
 
-			await interaction.editReply('house');
-			console.log(pointsForHouse);
+			let houseTotal = 0;
+			const topUsers = [];
+			for (let point of pointsForHouse) {
+				houseTotal += point.pointsAwarded;
+			}
+
+			interaction.editReply(`House ${houseObj.name} has earned ${houseTotal} points so far.`);
+
+		} catch (error) {
+			console.log(error);
+		}
+
+	} else if (commandSelected === 'user') {
+		const userSelected = interaction.options.getMember('user') as GuildMember;
+
+		const userData = await dbSource.getRepository(User).findOne({where: {discordId: userSelected.id}});
+
+		if (userData === null) {
+			return;
+		}
+
+		try{
+			const pointsForUser = await pointsRepo
+			.createQueryBuilder('point')
+			.leftJoin('point.houseAwarded', 'house')
+			.leftJoinAndSelect('point.userAwarded', 'user')
+			.where('user.id = :userId', { userId: userData.id })
+			.getMany();
+
+			let userTotal = 0;
+			const topUsers = [];
+			for (let point of pointsForUser) {
+				userTotal += point.pointsAwarded;
+			}
+
+			interaction.editReply(`user <@${userData.discordId}> has earned ${userTotal} points so far.`);
+
+		} catch (error) {
+			console.log(error);
+		}
+
+	} else if (commandSelected === 'final_scores') {
+
+		try{
+			const pointsList = await pointsRepo.find({relations: {houseAwarded: true, userAwarded: true}});
+
+			let pointsTotal = 0;
+			const topUsers: IUserPointList[] = [];
+			const topHouses = [
+				{name: 'Honeysting', value: 0},
+				{name: 'Pollenmason', value: 0},
+				{name: 'Carderflight', value: 0},
+				{name: 'Bumblebutt', value: 0}
+			];
+
+			for (let point of pointsList) {
+				pointsTotal += point.pointsAwarded;
+				switch (point.houseAwarded.name) {
+					case 'Honeysting':
+						topHouses[0].value += point.pointsAwarded;
+						break;
+					case 'Pollenmason':
+						topHouses[1].value += point.pointsAwarded;
+						break;
+					case 'Carderflight':
+						topHouses[2].value += point.pointsAwarded;
+						break;
+					case 'Bumblebutt':
+						topHouses[3].value += point.pointsAwarded;
+						break;
+					default:
+						break;
+				};
+				if (topUsers.some(user => user.name === point.userAwarded.discordUsername)) {
+					const userIndex = topUsers.findIndex(user => user.name === point.userAwarded.discordUsername);
+					topUsers[userIndex].points += point.pointsAwarded;
+				  } else {
+					topUsers.push({name: point.userAwarded.discordUsername, points: point.pointsAwarded})
+				  }
+			}
+			console.log(topHouses, topUsers);
+
+			interaction.editReply(`userr.`);
+
 		} catch (error) {
 			console.log(error);
 		}
 
 	}
+
 
 
 }
