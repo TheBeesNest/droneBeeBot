@@ -258,7 +258,7 @@ const pointTallyingLogic = async (interaction: ChatInputCommandInteraction): Pro
 			interaction.editReply(finalTallyString(finalHouse, finalUsers));
 
 			try {
-				//await pointsRepo.softRemove(pointsList)
+				await pointsRepo.softRemove(pointsList)
 			} catch (error) {
 				console.log(error);
 			}
@@ -291,8 +291,7 @@ Next lets see whose been the most active in the community.
 	2nd 🥈 - ${localUserList[1].name}
 	3rd  🥉 - ${localUserList[2].name}
 
-
-
-
+A million thanks to all the top three, as im sure a large part of your win this run has been due to the large amount of support you've given
+And to everyone else, you've not been forgotten and next time im sure well see you on this list too.
 	`
 }
