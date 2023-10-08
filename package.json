@@ -12,6 +12,9 @@
     "migration:create": "npm run typeorm migration:create --",
     "migration:run": "npm run typeorm migration:run -- -d src/dbConnection.ts",
     "migration:revert": "npm run typeorm migration:revert -- -d src/dbConnection.ts",
+    "staging:migration:revert": "npm run typeorm migration:revert -- -d src/stagingConnection.ts",
+    "staging:migration:run": "npm run typeorm migration:run -- -d src/stagingConnection.ts",
+	"staging:command:update": "ts-node src/stagingCommands.ts",
     "production:migration:revert": "npm run typeorm migration:revert -- -d src/prodConnection.ts",
     "production:migration:run": "npm run typeorm migration:run -- -d src/prodConnection.ts",
 	"production:command:update": "ts-node src/prodCommands.ts"
