@@ -129,7 +129,7 @@ const pointAllocationLogic = async (interaction: ChatInputCommandInteraction): P
 
 		try {
 			await pointsRepo.save(pointsData);
-			await interaction.editReply('awarded');
+			await interaction.editReply(`<@${userData.discordId}> has been awarded ${points} points`); //(user name) has been awarded X Points
 		} catch (error) {
 			new ErrorLogger(error, 'points#awardPoints', {pointsData, userData, points});
 		};
@@ -142,7 +142,7 @@ const pointAllocationLogic = async (interaction: ChatInputCommandInteraction): P
 
 		try {
 			await pointsRepo.save(pointsData);
-			await interaction.editReply('punished');
+			await interaction.editReply(`<@${userData.discordId}> has had ${points} deducted from them`); //(user name) has had X Points deducted from them
 		} catch (error) {
 			new ErrorLogger(error, 'points#punishPoints', {pointsData, userData, points});
 		};
