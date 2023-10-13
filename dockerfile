@@ -4,8 +4,8 @@ WORKDIR /build
 
 COPY . .
 
-RUN npm i
-RUN npx tsc
+RUN pnpm i
+RUN pnpm exec tsc
 
 FROM --platform=linux/amd64 node:lts-alpine as app
 
