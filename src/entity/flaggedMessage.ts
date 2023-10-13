@@ -1,6 +1,7 @@
-import { Column, CreateDateColumn, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, CreateDateColumn, Entity, JoinColumn, ManyToOne, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
 import { User } from '.';
 import { EFlaggedReason } from '../constants';
+import { MediaAsset } from './mediaAsset';
 
 @Entity()
 export class FlaggedMessage {
@@ -28,4 +29,17 @@ export class FlaggedMessage {
 		name: 'flagged_date',
 	})
 	flaggedDate: Date;
+
+	@JoinColumn({
+		name: 'attachment_id',
+	})
+	@OneToMany(() => MediaAsset, mediaAsset => mediaAsset.flaggedMessage)
+	attachments: MediaAsset[];
+
+	@Column({
+		name: 'has_attachments',
+		type: 'bool',
+		default: false,
+	})
+	hasAttachments: boolean;
 }

@@ -2,8 +2,9 @@ import { Events, Message } from 'discord.js';
 import dbSource from '../dbConnection';
 import { User } from '../entity';
 import { FlaggedMessage } from '../entity/flaggedMessage';
-import { EFlaggedReason } from '../constants';
+import { EFlaggedReason, EMediaSaveReason } from '../constants';
 import ErrorLogger from '../classes/errorHandling';
+import { MediaAsset } from '../entity/mediaAsset';
 
 
 export const name = Events.MessageDelete;
@@ -12,6 +13,7 @@ export const execute = async (interaction: Message) => {
 	if (interaction.author === null){
 		return;			// this is to account for the fact that replies that are deleted are empty in teh interaction
 	}
+
 	const messageAuthor = interaction.author.id;
 	const messageData = new FlaggedMessage();
 	try {
@@ -26,7 +28,23 @@ export const execute = async (interaction: Message) => {
 		messageData.message = interaction.content;
 		messageData.flaggedReason = EFlaggedReason.DELETED;
 
-		await flaggedMessage.save(messageData);
+		const result = await flaggedMessage.save(messageData);
+
+		if (interaction.attachments) {
+			const attachmentArray = interaction.attachments;
+
+			attachmentArray.map(async (attachment) => {
+				const attachmentData = new MediaAsset();
+				attachmentData.discordUser = user;
+				attachmentData.flaggedMessage = result;
+				attachmentData.saveReason = EMediaSaveReason.FLAGGEDMESSAGE;
+				attachmentData.filename = attachment.name;
+				attachmentData.url = attachment.url;
+				messageData.hasAttachments = true;
+				await dbSource.getRepository(MediaAsset).save(attachmentData);
+			})
+
+		}
 
 	} catch (error) {
 		new ErrorLogger(error, 'processDeletedMessage', {messageAuthor, messageData});
