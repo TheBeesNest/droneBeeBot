@@ -1,5 +1,6 @@
-import { Column, Entity, JoinColumn, OneToOne, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, Entity, JoinColumn, ManyToOne, OneToOne, PrimaryGeneratedColumn } from 'typeorm';
 import { Reason } from './reason';
+import { User } from './user';
 
 @Entity()
 export class UserWarning {
@@ -10,12 +11,11 @@ export class UserWarning {
 	})
 	id: number;
 
-	@Column({
-		name: 'discord_id',
-		type: 'varchar',
-		nullable: false
+	@JoinColumn({
+		name: 'user_id',
 	})
-	discordId: string;
+	@ManyToOne(() => User, user => user.id)
+	userId: User;
 
 	@Column({
 		name: 'name',
