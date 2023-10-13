@@ -38,4 +38,11 @@ export class MediaAsset{
 	@ManyToOne(() => FlaggedMessage, flaggedMessage => flaggedMessage.attachments, {cascade: true})
 	@JoinColumn({name: 'linked_message'})
 	flaggedMessage: FlaggedMessage;
+
+	@Column({
+		name: 'base64_image',
+		type: 'longblob',
+		nullable: true,
+	})
+	imageBlob: string;
 }

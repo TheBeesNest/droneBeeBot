@@ -5,6 +5,7 @@ import { FlaggedMessage } from '../entity/flaggedMessage';
 import { EFlaggedReason, EMediaSaveReason } from '../constants';
 import ErrorLogger from '../classes/errorHandling';
 import { MediaAsset } from '../entity/mediaAsset';
+import axios from 'axios';
 
 
 export const name = Events.MessageDelete;
@@ -34,7 +35,15 @@ export const execute = async (interaction: Message) => {
 			const attachmentArray = interaction.attachments;
 
 			attachmentArray.map(async (attachment) => {
+				const imageBlob = await axios({
+					method: 'get',
+					url: attachment.url,
+					responseType: 'arraybuffer',
+				});
+				const image = Buffer.from(imageBlob.data, 'binary').toString('base64');
+
 				const attachmentData = new MediaAsset();
+				attachmentData.imageBlob = image;
 				attachmentData.discordUser = user;
 				attachmentData.flaggedMessage = result;
 				attachmentData.saveReason = EMediaSaveReason.FLAGGEDMESSAGE;
