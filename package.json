@@ -20,7 +20,7 @@
 	"production:command:update": "ts-node src/prodCommands.ts"
   },
   "keywords": [],
-  "author": "",
+  "author": "myles3850",
   "license": "ISC",
   "dependencies": {
     "discord.js": "^14.12.0",
