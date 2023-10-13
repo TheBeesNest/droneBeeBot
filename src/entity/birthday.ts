@@ -1,4 +1,5 @@
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
+import { User } from './user';
 
 @Entity()
 export class Birthday {
@@ -6,11 +7,11 @@ export class Birthday {
 	@PrimaryGeneratedColumn()
 	id: number;
 
-	@Column({
-		name: 'discord_id',
-		nullable:false
+	@JoinColumn({
+		name: 'user_id',
 	})
-	discordID: string;
+	@ManyToOne(() => User, user => user.id)
+	userId: User;
 
 	@Column({
 		nullable: false

@@ -2,6 +2,7 @@ import { ChatInputCommandInteraction, SlashCommandBuilder } from 'discord.js';
 import ErrorLogger from '../../classes/errorHandling';
 import dbSource from '../../dbConnection';
 import { Birthday } from '../../entity/birthday';
+import { User } from '../../entity';
 
 export const data = new SlashCommandBuilder()
 	.setName('birthdays')
@@ -30,21 +31,31 @@ export const data = new SlashCommandBuilder()
 		)
 
 export const execute = async (interaction: ChatInputCommandInteraction) => {
+	const user = interaction.user;
+	const userDetails = await dbSource.getRepository(User).findOneBy({discordId: user.id});
+	const birthdayRepo = dbSource.getRepository(Birthday);
+
+	if (userDetails === null) {
+		await interaction.editReply(`I'm really sorry, but i don't know you yet. If you start chatting with others for a bit, then you can add your birthday.`);
+		return;
+	}
+
+	const entry = await birthdayRepo
+		.createQueryBuilder('bday')
+		.leftJoinAndSelect('bday.userId', 'user')
+		.where('user.id = :userID', {userID : userDetails.id})
+		.getOne();
 
 	if (interaction.options.getSubcommand() === 'add'){
 		await interaction.deferReply({ephemeral: true})
 
 		const birthDate = interaction.options.getNumber('day');
 		const birthMonth = interaction.options.getNumber('month');
-		const user = interaction.user;
-
-		const birthdayRepo = dbSource.getRepository(Birthday);
-		const entry = await birthdayRepo.findOne({where: {discordID: user.id}})
 
 		const birthdayData = new Birthday();
 
 		if ( entry != null) { birthdayData.id = entry.id };
-		birthdayData.discordID = user.id;
+		birthdayData.userId = userDetails;
 		birthdayData.birthday = `${birthDate}/${birthMonth}`;
 
 		try {
@@ -57,9 +68,19 @@ export const execute = async (interaction: ChatInputCommandInteraction) => {
 	else if (interaction.options.getSubcommand() === 'remove') {
 		await interaction.deferReply({ephemeral: true});
 
-		const user = interaction.user;
+		if (userDetails === null) {
+			await interaction.editReply(`I'm really sorry, but i don't know you yet. If you start chatting with others for a bit, then you can add your birthday.`);
+			return;
+		}
+
+		if ( entry === null) {
+			await interaction.editReply('I have removed your cake day from my reminder list');
+			return;
+		};
+
+
 		try{
-			await dbSource.getRepository(Birthday).delete({discordID: user.id});
+			await dbSource.getRepository(Birthday).remove(entry);
 			await interaction.editReply('I have removed your cake day from my reminder list');
 
 		} catch(error) {

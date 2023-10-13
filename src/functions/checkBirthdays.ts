@@ -3,6 +3,7 @@ import dbSource from '../dbConnection'
 import { Birthday } from '../entity/birthday'
 import ErrorLogger from '../classes/errorHandling';
 import { ExtendedClient } from '../classes/extClient';
+import { User } from '../entity';
 
 const checkAndCallBirthdays = async (interaction: ExtendedClient) => {
 	console.log('checking birthdays')
@@ -15,7 +16,12 @@ const checkAndCallBirthdays = async (interaction: ExtendedClient) => {
 	for(let birthday of birthdayList) {
 		console.log('checking found bday')
 
-		const user = birthday.discordID;
+		const user = birthday.userId.id;
+
+		if (user === null) {
+			return;
+		}
+
 		const birthDayAndMonth = birthday.birthday.split('/');
 		const formattedBirthday: string[] = [];
 
