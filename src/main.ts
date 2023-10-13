@@ -72,7 +72,9 @@ if (process.env.debug) {
 try {
 	dbSource.initialize().then( () => console.log('DB connected and ready'))
 	cron.schedule('0 0 2 * * *', () => checkAndCallBirthdays(client));
-	client.login(process.env.botApiToken);
+	client.login(process.env.botApiToken).then(() => {
+		// client.user?.setAvatar('src/images/test.png')
+	});
 } catch (error) {
 	console.log(error);
 	exit(-1);
