@@ -4,6 +4,7 @@ WORKDIR /build
 
 COPY . .
 
+RUN npm i -g pnpm
 RUN pnpm i
 RUN pnpm exec tsc
 
