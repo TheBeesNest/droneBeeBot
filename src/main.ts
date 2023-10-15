@@ -73,7 +73,7 @@ try {
 	dbSource.initialize().then( () => console.log('DB connected and ready'))
 	cron.schedule('0 0 2 * * *', () => checkAndCallBirthdays(client));
 	client.login(process.env.botApiToken).then(() => {
-		// client.user?.setAvatar('src/images/test.png')
+		( client.user !== null ) && client.user.setAvatar('src/images/main-bot-logo.jpeg');
 	});
 } catch (error) {
 	console.log(error);
