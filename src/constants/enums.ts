@@ -1,5 +1,6 @@
 export enum EFlaggedReason {
 	DELETED = 'DELETED',
+	EDITED = 'EDITED',
 	MOD = 'MOD_FLAGGED',
 	AUTOMOD = 'AUTOMOD_FLAGGED'	,
 };
