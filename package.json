@@ -17,7 +17,7 @@
     "staging:command:update": "ts-node src/stagingCommands.ts",
     "production:migration:revert": "npm run typeorm migration:revert -- -d src/prodConnection.ts",
     "production:migration:run": "npm run typeorm migration:run -- -d src/prodConnection.ts",
-    "production:command:update": "ts-node src/prodCommands.ts"
+    "production:commands:update": "ts-node src/prodCommands.ts"
   },
   "keywords": [],
   "author": "myles3850",

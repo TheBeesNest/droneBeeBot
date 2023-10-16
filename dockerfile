@@ -15,6 +15,7 @@ ENV node_env=production
 WORKDIR /server
 
 COPY --from=builder /build/dist /server/
+COPY --from=builder /build/src/images /server/src/images
 COPY --from=builder /build/node_modules /server/node_modules
 
 ENV NODE_ENV=production
