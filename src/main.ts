@@ -62,15 +62,17 @@ for (const file of eventFiles) {
 	}
 }
 
-if (process.env.debug) {
-	client
-		.on("debug", console.log)
-		.on("warn", console.log);
-};
 
 //lets goooooo
 try {
 	dbSource.initialize().then( () => console.log('DB connected and ready'))
+
+	if (process.env.debug) {
+		client
+			.on("debug", console.log)
+			.on("warn", console.log);
+	};
+
 	cron.schedule('0 0 2 * * *', () => checkAndCallBirthdays(client));
 	client.login(process.env.botApiToken);
 } catch (error) {
