@@ -14,7 +14,9 @@ export class FlaggedMessage {
 	@ManyToOne(() => User, user => user.id)
 	userId: User;
 
-	@Column()
+	@Column({
+		type: 'text',
+	})
 	message: string;
 
 	@Column({

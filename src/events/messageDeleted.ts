@@ -1,11 +1,9 @@
-import { Events, Message } from 'discord.js';
-import dbSource from '../dbConnection';
-import { User } from '../entity';
-import { FlaggedMessage } from '../entity/flaggedMessage';
-import { EFlaggedReason, EMediaSaveReason } from '../constants';
-import ErrorLogger from '../classes/errorHandling';
-import { MediaAsset } from '../entity/mediaAsset';
 import axios from 'axios';
+import { Events, Message } from 'discord.js';
+import ErrorLogger from '../classes/errorHandling';
+import { EFlaggedReason, EMediaSaveReason } from '../constants';
+import dbSource from '../dbConnection';
+import { FlaggedMessage, MediaAsset, User } from '../entity';
 
 
 export const name = Events.MessageDelete;
