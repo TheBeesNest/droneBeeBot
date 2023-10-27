@@ -1,7 +1,8 @@
-import { SlashCommandBuilder, PermissionFlagsBits, ChatInputCommandInteraction, GuildMember } from 'discord.js';
+import { SlashCommandBuilder, PermissionFlagsBits, ChatInputCommandInteraction, GuildMember, TextChannel } from 'discord.js';
 import ErrorLogger from '../../classes/errorHandling';
-import { Reason, User, UserWarning } from '../../entity';
+import { FlaggedMessage, Reason, User, UserWarning } from '../../entity';
 import dbSource from '../../dbConnection';
+import { EFlaggedReason } from '../../constants';
 
 const warningMessage = (user: GuildMember) => {
 	return `${user} you are being warned about your recent conduct.
@@ -14,20 +15,29 @@ export const data = new SlashCommandBuilder()
 	.setDescription('use this command to give a warning and log reason for warning')
 	.setDefaultMemberPermissions(PermissionFlagsBits.ManageRoles)
 	.addUserOption(option =>
-		option.setName('user')
+		option
+			.setName('user')
 			.setDescription('give the user to have a role added')
-			.setRequired(true))
+			.setRequired(true)
+	)
 	.addStringOption(option =>
-		option.setName('reason')
+		option
+			.setName('reason')
 			.setDescription('reason for the warning')
+	)
+	.addStringOption(option =>
+		option
+			.setName('message')
+			.setDescription(`hold 'shift' and click the id icon when hovering over the message`)
 	)
 
 export const execute = async (interaction: ChatInputCommandInteraction) => {
 	const user = interaction.options.getMember('user') as GuildMember;
 	const reason = interaction.options.getString('reason');
-	try {
-		await interaction.deferReply({ephemeral: true});
+	const messageString = interaction.options.getString('message');
+	await interaction.deferReply({ephemeral: true});
 
+	try {
 		const userData = await dbSource.getRepository(User).findOneBy({discordId: user.id});
 
 		if (userData === null) {
@@ -37,22 +47,36 @@ export const execute = async (interaction: ChatInputCommandInteraction) => {
 
 		const warningData = new UserWarning();
 		warningData.userId = userData;
-		warningData.name = user.displayName;
 		if (reason) {
 			const offenceReason = new Reason();
 			offenceReason.reason = reason;
 			warningData.reason = offenceReason;
 		}
+		if (messageString) {
+			const messageStringArray = messageString?.split(`-`) as string[];
+			const channelId = messageStringArray[0];
+			const messageId = messageStringArray[1];
+
+			const channel = await interaction.guild?.channels.fetch(channelId) as TextChannel;
+
+			if (channel) {
+				const message = await channel.messages.fetch(messageId);
+
+				const messageData = new FlaggedMessage();
+				messageData.message = message.content;
+				messageData.flaggedReason = EFlaggedReason.MOD;
+				messageData.userId = userData;
+				warningData.relatedMessage = messageData;
+				messageData.userWarning = warningData;
+			}
+		}
 		await dbSource.getRepository(UserWarning).save(warningData);
 
 		await interaction.editReply(`warning has been logged for user: ${user}`);
-		await interaction.followUp(warningMessage(user));
-
-		//channel.send(warningMessage(user));
-
 
 	} catch (error) {
-		new ErrorLogger(error, data.name, {user, reason});
+		await interaction.editReply(`something went wrong there... sorry`)
+		new ErrorLogger(error, data.name, {user, reason, messageString});
 	}
 
 }

@@ -24,7 +24,7 @@ const client = new ExtendedClient({
 		Partials.GuildScheduledEvent,
 		Partials.Message,
 		Partials.Reaction,
-		Partials.User
+		Partials.User,
 	],
 	presence: {activities: [{name: 'the hive for bad bees', type: ActivityType.Watching}]},
 });
