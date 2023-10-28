@@ -4,12 +4,6 @@ import { FlaggedMessage, Reason, User, UserWarning } from '../../entity';
 import dbSource from '../../dbConnection';
 import { EFlaggedReason } from '../../constants';
 
-const warningMessage = (user: GuildMember) => {
-	return `${user} you are being warned about your recent conduct.
-we do not condone those not following the rules and if you keep this up we will take more drastic action.
-please treat this as your warning.`
-}
-
 export const data = new SlashCommandBuilder()
 	.setName('warning')
 	.setDescription('use this command to give a warning and log reason for warning')
@@ -30,6 +24,7 @@ export const data = new SlashCommandBuilder()
 			.setName('message')
 			.setDescription(`hold 'shift' and click the id icon when hovering over the message`)
 	)
+
 
 export const execute = async (interaction: ChatInputCommandInteraction) => {
 	const user = interaction.options.getMember('user') as GuildMember;
