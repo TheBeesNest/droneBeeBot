@@ -4,6 +4,9 @@ import { FlaggedMessage, Reason, User, UserWarning } from '../../entity';
 import dbSource from '../../dbConnection';
 import { EFlaggedReason } from '../../constants';
 
+export const name = 'user warning';
+
+
 export const data = new SlashCommandBuilder()
 	.setName('warning')
 	.setDescription('use this command to give a warning and log reason for warning')

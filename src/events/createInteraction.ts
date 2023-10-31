@@ -4,7 +4,6 @@ import ErrorLogger from '../classes/errorHandling';
 export const name = Events.InteractionCreate;
 
 export const execute = async (interaction: any) => {
-	if (!interaction.isChatInputCommand()) return;
 
 	const command = interaction.client.commands.get(interaction.commandName);
 
