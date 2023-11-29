@@ -6,7 +6,7 @@ import * as path from 'path';
 import { exit } from 'process';
 import { ExtendedClient } from './classes/extClient';
 import dbSource from './dbConnection';
-import checkAndCallBirthdays from './functions/checkBirthdays';
+import { checkAndCallBirthdays } from './functions/checkBirthdays';
 
 
 console.log('starting up Bot!')

@@ -1,7 +1,8 @@
-import { ChatInputCommandInteraction, PermissionFlagsBits, SlashCommandBuilder } from 'discord.js';
+import { ChatInputCommandInteraction, PermissionFlagsBits, SlashCommandBuilder, TextChannel } from 'discord.js';
 import ErrorLogger from '../../classes/errorHandling';
 import dbSource from '../../dbConnection';
-import { Birthday, User } from '../../entity';
+import { Birthday, Settings, User } from '../../entity';
+import { callBirthday } from '../../functions';
 
 export const data = new SlashCommandBuilder()
 	.setName('mod')
@@ -42,6 +43,18 @@ export const data = new SlashCommandBuilder()
 						option
 							.setName('user')
 							.setDescription('select the user whose birthday you are removing')
+							.setRequired(true)
+						)
+
+				)
+			.addSubcommand( subcommand =>
+				subcommand
+					.setName('celebrate')
+					.setDescription('celebrate a users birthday now!')
+					.addUserOption(option =>
+						option
+							.setName('user')
+							.setDescription('select the user whose birthday it is')
 							.setRequired(true)
 						)
 
@@ -114,6 +127,21 @@ export const execute = async (interaction: ChatInputCommandInteraction) => {
 		} catch(error) {
 			new ErrorLogger(error, data.name, user);
 		};
+	}
+	else if (interaction.options.getSubcommand() === 'celebrate') {
+		try{
+			const settings = await dbSource.getRepository(Settings).find();
+
+			const channel = await interaction.guild?.channels.cache.get(
+				(settings.find(
+					entry => entry.setting === 'birthday_channel'
+				))?.value as string) as TextChannel;
+
+			await callBirthday(channel, user.id);
+			await interaction.editReply('Celebration send');
+		}catch(e) {
+			console.log(e);
+		}
 	};
 };
 
