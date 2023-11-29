@@ -1,5 +1,4 @@
 FROM --platform=linux/amd64 node:lts-alpine AS builder
-
 WORKDIR /build
 
 COPY . .
@@ -9,9 +8,6 @@ RUN pnpm i
 RUN pnpm exec tsc
 
 FROM --platform=linux/amd64 node:lts-alpine as app
-
-ENV node_env=production
-
 WORKDIR /server
 
 COPY --from=builder /build/dist /server/
@@ -27,7 +23,6 @@ ENV welcome_role=
 ENV birthday_channel=
 
 #db settings
-
 ENV dbHost=
 ENV dbPort=
 ENV database=
