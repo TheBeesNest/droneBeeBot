@@ -1,4 +1,4 @@
-import { getVoiceConnection } from '@discordjs/voice';
+import { VoiceConnection, getVoiceConnection } from '@discordjs/voice';
 import { Events, GuildMember, VoiceState } from 'discord.js';
 
 export const name = Events.VoiceStateUpdate;
@@ -15,5 +15,8 @@ export const execute = async (client: VoiceState) => {
 		)
 		.map(member => member);
 
-
+	if (botAccount.voice.channel && voiceMemberList.length === 0) {
+		const voice = getVoiceConnection(botAccount.guild.id) as VoiceConnection;
+		voice.destroy();
+	}
 };
