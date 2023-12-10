@@ -15,6 +15,7 @@
 		"forceConsistentCasingInFileNames": true,
 		"strictPropertyInitialization": false,
 		"removeComments": true,
+		"noImplicitAny": true,
 		"lib": ["ES6"],
 		"typeRoots": [
 			"node_modules/@types"

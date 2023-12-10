@@ -1,6 +1,7 @@
-import { NoSubscriberBehavior, PlayerSubscription, createAudioPlayer, createAudioResource, joinVoiceChannel } from '@discordjs/voice';
+import { AudioPlayerStatus, createAudioResource, joinVoiceChannel } from '@discordjs/voice';
 import { SlashCommandBuilder, PermissionFlagsBits, ChatInputCommandInteraction, GuildMember, Guild } from 'discord.js';
 import ytdl from 'ytdl-core';
+import { audioListLinks, isAudioEventListenerSetup, player, setAudioListener } from '../../classes/audioPlayer';
 
 export const data = new SlashCommandBuilder()
 	.setName('player')
@@ -16,7 +17,7 @@ export const data = new SlashCommandBuilder()
 			.setDescription('youTube link to play')
 			.setRequired(true)
 		)
-	)
+	);
 
 export const execute = async (interaction: ChatInputCommandInteraction) => {
 	await interaction.deferReply();
@@ -25,40 +26,30 @@ export const execute = async (interaction: ChatInputCommandInteraction) => {
 	const guild = interaction.guild as Guild;
 	const user = interaction.member as GuildMember;
 
-	const streamOptions = { seek: 0, volume: 1 };
+	if (user.voice.channel) {
+		audioListLinks.push(linkEntered)
 
-if (user.voice.channel) {
-    console.log(`${user.user.tag} is connected to ${user.voice.channel.name}!`);
+		console.log(audioListLinks)
 
-	const channelId = user.voice.channel.id;
-	const guildId = guild.id as string;
-	const stream = ytdl(linkEntered, { filter: 'audioonly'});
-	const resource = createAudioResource(stream)
+		if (player.state.status === AudioPlayerStatus.Idle) {
+			const channelId = user.voice.channel.id;
+			const guildId = guild.id as string;
+			const stream = ytdl(audioListLinks[0] as string, { filter: 'audioonly'});
+			const resource = createAudioResource(stream)
 
-	const connection = joinVoiceChannel({channelId, guildId, adapterCreator: guild.voiceAdapterCreator});
-	const dispatcher = connection.subscribe(player) as PlayerSubscription;
-	player.play(resource);
+			const connection = joinVoiceChannel({channelId, guildId, adapterCreator: guild.voiceAdapterCreator});
 
-	// while (user.voice.channel.members) {};
+			connection.subscribe(player);
+			player.play(resource);
+			audioListLinks.shift();
+		}
 
-} else {
-    // The member is not connected to a voice channel.
-    console.log(`${user.user.tag} is not connected.`);
-};
+		const stateSetup = isAudioEventListenerSetup();
+		console.log(stateSetup);
+
+		if (!stateSetup) {
+			setAudioListener(guild.id, player);
+		}
+	};
 	await interaction.editReply(linkEntered);
-
-	// var voiceChannel = message.member.voiceChannel;
-    //     voiceChannel.join().then(connection => {
-    //         console.log("joined channel");
-    //         const stream = ytdl('https://www.youtube.com/watch?v=gOMhN-hfMtY', { filter : 'audioonly' });
-    //         const dispatcher = connection.playStream(stream, streamOptions);
-    //         dispatcher.on("end", end => {
-    //             console.log("left channel");
-    //             voiceChannel.leave();
-    //         });
-    //     }).catch(err => console.log(err));
 }
-
-const player = createAudioPlayer({behaviors: {
-	noSubscriber: NoSubscriberBehavior.Stop,
-}});

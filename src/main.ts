@@ -8,7 +8,6 @@ import { ExtendedClient } from './classes/extClient';
 import dbSource from './dbConnection';
 import { checkAndCallBirthdays } from './functions/checkBirthdays';
 
-
 console.log('starting up Bot!')
 
 const client = new ExtendedClient({
