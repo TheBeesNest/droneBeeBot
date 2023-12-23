@@ -135,7 +135,10 @@ export const execute = async (interaction: ChatInputCommandInteraction) => {
 	}
 
 	async function skipSong() {
-		player.stop();
+		if (player.state.status === AudioPlayerStatus.Playing){
+			player.stop();
+		}
+		await interaction.editReply('time for the next one :)');
 	}
 
 	async function stopPlaying() {

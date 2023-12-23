@@ -26,7 +26,7 @@ export function resetAudioEventListener() {
 	audioListLinks.push('https://www.youtube.com/watch?v=Vbks4abvLEw');
 }
 
-export const SetupListener = (guildId: string, player: AudioPlayer) =>
+export function SetupListener(guildId: string, player: AudioPlayer) {
 	player.on(AudioPlayerStatus.Idle, async () => {
 		console.log('end of song');
 		if (audioListLinks.length) {
@@ -48,3 +48,4 @@ export const SetupListener = (guildId: string, player: AudioPlayer) =>
 			}, 3000);
 		}
 	});
+}
