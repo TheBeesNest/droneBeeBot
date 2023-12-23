@@ -1,34 +1,50 @@
-import { AudioPlayerStatus, NoSubscriberBehavior, VoiceConnection, createAudioPlayer, createAudioResource, getVoiceConnection } from '@discordjs/voice';
-import ytdl from 'ytdl-core';
+import {
+	AudioPlayer,
+	AudioPlayerStatus,
+	NoSubscriberBehavior,
+	VoiceConnection,
+	createAudioPlayer,
+	createAudioResource,
+	getVoiceConnection,
+} from '@discordjs/voice';
+import play from 'play-dl';
 
-export const audioListLinks: string[] = [];
+export const audioListLinks: string[] = ['https://www.youtube.com/watch?v=Vbks4abvLEw'];
 let audioEventListenerSetup = false;
 
-export const player = createAudioPlayer({behaviors: {
-	noSubscriber: NoSubscriberBehavior.Stop,
-}});
+export const player = createAudioPlayer({
+	behaviors: {
+		noSubscriber: NoSubscriberBehavior.Stop,
+	},
+});
 
 export function isAudioEventListenerSetup() {
-    return audioEventListenerSetup;
+	return audioEventListenerSetup;
 }
 
-export function setAudioListener(guildId: string, player: any) {
-	audioEventListenerSetup = true;
+export function resetAudioEventListener() {
+	audioListLinks.push('https://www.youtube.com/watch?v=Vbks4abvLEw');
+}
+
+export const SetupListener = (guildId: string, player: AudioPlayer) =>
 	player.on(AudioPlayerStatus.Idle, async () => {
-			if (audioListLinks.length) {
-				const stream = ytdl(audioListLinks[0] as string, { filter: 'audioonly' });
-				const resource = createAudioResource(stream);
-				await player.play(resource)
-				audioListLinks.shift();
-			} else {
-				setTimeout(() => {
-					const voice = getVoiceConnection(guildId) as VoiceConnection;
+		console.log('end of song');
+		if (audioListLinks.length) {
+			console.log('next song');
+			const stream = await play.stream(audioListLinks[0] as string, {});
+			const resource = createAudioResource(stream.stream, {
+				inputType: stream.type,
+			});
+			await player.play(resource);
+			audioListLinks.shift();
+		} else {
+			console.log('no songs left');
+			setTimeout(() => {
+				const voice = getVoiceConnection(guildId) as VoiceConnection;
+				if (voice) {
 					voice.destroy();
-				}, 3000)
-			}
-		});
-	player.on('error', (error: any) => {
-		console.error('Audio player error:', error);
+					resetAudioEventListener();
+				}
+			}, 3000);
+		}
 	});
-
-}
