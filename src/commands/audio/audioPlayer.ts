@@ -142,7 +142,7 @@ export const execute = async (interaction: ChatInputCommandInteraction) => {
 	}
 
 	async function stopPlaying() {
-		player.stop();
+		// player.stop();
 		await interaction.editReply(`ok ill stop :'(`);
 		resetAudioEventListener();
 		setTimeout(() => {
