@@ -8,7 +8,6 @@ import { ExtendedClient } from './classes/extClient';
 import dbSource from './dbConnection';
 import { checkAndCallBirthdays } from './functions/checkBirthdays';
 
-
 console.log('starting up Bot!')
 
 const client = new ExtendedClient({
@@ -16,6 +15,7 @@ const client = new ExtendedClient({
 		GatewayIntentBits.Guilds,
 		GatewayIntentBits.GuildMembers,
 		GatewayIntentBits.GuildMessages,
+		GatewayIntentBits.GuildVoiceStates,
 		GatewayIntentBits.MessageContent,
 	],
 	partials: [
