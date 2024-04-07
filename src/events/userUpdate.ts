@@ -6,15 +6,16 @@ import { User } from '../entity';
 export const name = Events.GuildMemberUpdate;
 
 export const execute = async (oldData: GuildMember, newData: GuildMember) => {
-
-	const userUpdate = new User;
+	const userUpdate = new User();
 	const userData = dbSource.getRepository(User);
-	const userAccount = await userData.findOne({where: {discordId: oldData.user.id}});
+	const userAccount = await userData.findOne({ where: { discordId: oldData.user.id } });
 
-	if (userAccount !== null) {userUpdate.id = userAccount.id}
+	if (userAccount !== null) {
+		userUpdate.id = userAccount.id;
+	}
 
 	if (oldData.nickname === newData.nickname) {
-		return
+		return;
 	} else if (newData.nickname === null) {
 		userUpdate.discordUsername = newData.displayName;
 	} else {
@@ -22,10 +23,9 @@ export const execute = async (oldData: GuildMember, newData: GuildMember) => {
 	}
 	userUpdate.discordId = oldData.user.id;
 
-	try{
+	try {
 		await userData.save(userUpdate);
-	} catch(error) {
-		new ErrorLogger(error, 'updateUserEvent', {oldData, newData, userUpdate, userData});
+	} catch (error) {
+		new ErrorLogger(error, 'updateUserEvent', { oldData, newData, userUpdate, userData });
 	}
-
 };
