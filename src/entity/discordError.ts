@@ -10,7 +10,7 @@ export class DiscordError {
 	command: string;
 	
 	@Column({type: 'text'})
-	variables?: string;
+	variables?: string | undefined;
 	
 	@Column({type: 'text'})
 	error: string;

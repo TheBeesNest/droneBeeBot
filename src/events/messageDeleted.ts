@@ -4,6 +4,7 @@ import ErrorLogger from '../classes/errorHandling';
 import { EFlaggedReason, EMediaSaveReason } from '../constants';
 import dbSource from '../dbConnection';
 import { FlaggedMessage, MediaAsset, User } from '../entity';
+import { imageBucket } from '../main';
 
 
 export const name = Events.MessageDelete;
@@ -38,7 +39,7 @@ export const execute = async (interaction: Message) => {
 					url: attachment.url,
 					responseType: 'arraybuffer',
 				});
-				const image = Buffer.from(imageBlob.data, 'binary').toString('base64');
+				const image = await imageBucket.addImage('jpg', imageBlob.data);
 
 				const attachmentData = new MediaAsset();
 				attachmentData.imageBlob = image;

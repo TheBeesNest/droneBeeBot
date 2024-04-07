@@ -11,5 +11,7 @@ declare namespace NodeJS{
 		welcome_channel: string;
 		welcome_role: string;
 		birthday_channel: string;
+		S3_ACCESSKEY: string;
+		S3_SECRET: string;
 	}
 }

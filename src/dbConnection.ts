@@ -10,6 +10,10 @@ const dbSource = new DataSource({
 	password: process.env.dbPassword,
 	entities: ['src/entity/*.ts', './entity/*.*'],
 	migrations: ['src/migration/*.ts'],
+	ssl: {
+		ca: process.env.cert,
+		rejectUnauthorized: false,
+	},
 
 })
 

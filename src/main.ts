@@ -7,8 +7,11 @@ import { exit } from 'process';
 import { ExtendedClient } from './classes/extClient';
 import dbSource from './dbConnection';
 import { checkAndCallBirthdays } from './functions/checkBirthdays';
+import { S3Manager } from './classes/s3Handler';
 
 console.log('starting up Bot!')
+
+export const imageBucket = new S3Manager();
 
 const client = new ExtendedClient({
 	intents: [
@@ -17,6 +20,7 @@ const client = new ExtendedClient({
 		GatewayIntentBits.GuildMessages,
 		GatewayIntentBits.GuildVoiceStates,
 		GatewayIntentBits.MessageContent,
+		GatewayIntentBits.GuildMessageReactions,
 	],
 	partials: [
 		Partials.Channel,
