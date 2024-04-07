@@ -32,7 +32,7 @@ export const execute = async (interaction: ContextMenuCommandInteraction) => {
 		) as Role;
 
 		await channel.permissionOverwrites.create(flaggedUser, {ViewChannel: false})
-		//await guildUser.roles.remove([conformerRole, observerRole]);
+		await guildUser.roles.remove([conformerRole, observerRole]);
 		await reporter(interaction);
 		await message.delete()
 		await interaction.followUp({
