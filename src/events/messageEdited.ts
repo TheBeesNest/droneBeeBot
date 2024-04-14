@@ -11,6 +11,10 @@ export const execute = async (oldMessage: Message, newMessage: Message) => {
 		return;			// this is to account for the fact that replies that are deleted are empty in teh interaction
 		}
 
+	if (oldMessage.channelId === '1226336112096710806' ||
+		newMessage.channelId === '1226336112096710806') {
+		return;
+	}
 	const messageAuthor = oldMessage.author.id;
 	const messageData = new FlaggedMessage();
 	try {
