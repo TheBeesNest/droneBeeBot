@@ -5,6 +5,7 @@ import * as fs from 'fs';
 import cron from 'node-cron';
 import * as path from 'path';
 import { exit } from 'process';
+
 import { ExtendedClient } from './classes/extClient';
 import dbSource from './dbConnection';
 import { checkAndCallBirthdays } from './functions/checkBirthdays';

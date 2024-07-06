@@ -5,6 +5,7 @@ import {
 	GuildMember,
 	TextChannel,
 } from 'discord.js';
+
 import ErrorLogger from '../../classes/errorHandling';
 import { FlaggedMessage, Reason, User, UserWarning } from '../../entity';
 import dbSource from '../../dbConnection';

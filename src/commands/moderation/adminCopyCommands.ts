@@ -4,6 +4,7 @@ import {
 	SlashCommandBuilder,
 	TextChannel,
 } from 'discord.js';
+
 import ErrorLogger from '../../classes/errorHandling';
 import dbSource from '../../dbConnection';
 import { Birthday, Settings, User } from '../../entity';

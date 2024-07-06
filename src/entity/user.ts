@@ -6,6 +6,7 @@ import {
 	OneToMany,
 	PrimaryGeneratedColumn,
 } from 'typeorm';
+
 import { House } from './house';
 import { Point } from './point';
 

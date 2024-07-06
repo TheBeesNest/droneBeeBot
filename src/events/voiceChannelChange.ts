@@ -1,5 +1,6 @@
 import { VoiceConnection, getVoiceConnection } from '@discordjs/voice';
 import { Events, GuildMember, VoiceState } from 'discord.js';
+
 import { resetAudioEventListener } from '../classes/audioPlayer';
 
 export const name = Events.VoiceStateUpdate;

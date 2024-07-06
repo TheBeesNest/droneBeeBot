@@ -16,5 +16,6 @@ export class SeedSettings1697978822847 implements MigrationInterface {
 		]);
 	}
 
+	// eslint-disable-next-line @typescript-eslint/no-unused-vars
 	public async down(queryRunner: QueryRunner): Promise<void> {}
 }

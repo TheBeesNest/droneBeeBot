@@ -5,6 +5,7 @@ import {
 	Role,
 	SlashCommandBuilder,
 } from 'discord.js';
+
 import dbSource from '../../dbConnection';
 import { House, User } from '../../entity';
 import ErrorLogger from '../../classes/errorHandling';

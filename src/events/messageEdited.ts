@@ -1,8 +1,9 @@
 import { Events, Message } from 'discord.js';
+import axios from 'axios';
+
 import { FlaggedMessage, MediaAsset, User } from '../entity';
 import dbSource from '../dbConnection';
 import { EFlaggedReason, EMediaSaveReason } from '../constants';
-import axios from 'axios';
 import ErrorLogger from '../classes/errorHandling';
 
 export const name = Events.MessageUpdate;

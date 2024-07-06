@@ -1,4 +1,5 @@
 import { TextChannel } from 'discord.js';
+
 import dbSource from '../dbConnection';
 import { Birthday } from '../entity/birthday';
 import ErrorLogger from '../classes/errorHandling';
@@ -14,7 +15,7 @@ export const checkAndCallBirthdays = async (interaction: ExtendedClient) => {
 		.find({ relations: { userId: true } });
 	const currentDate = getCurrentDate();
 
-	for (let birthday of birthdayList) {
+	for (const birthday of birthdayList) {
 		const user = birthday.userId.discordId;
 
 		if (user === null) {
@@ -24,7 +25,7 @@ export const checkAndCallBirthdays = async (interaction: ExtendedClient) => {
 		const birthDayAndMonth = birthday.birthday.split('/');
 		const formattedBirthday: string[] = [];
 
-		for (let entry of birthDayAndMonth) {
+		for (const entry of birthDayAndMonth) {
 			if (entry.length < 2) {
 				formattedBirthday.push(`0${entry}`);
 			} else {

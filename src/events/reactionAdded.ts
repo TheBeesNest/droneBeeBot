@@ -1,7 +1,8 @@
 import { Events, MessageReaction, User } from 'discord.js';
+import { warn } from 'console';
+
 import dbSource from '../dbConnection';
 import { RoleReaction } from '../entity/roleReaction';
-import { warn } from 'console';
 import ErrorLogger from '../classes/errorHandling';
 
 export const name = Events.MessageReactionAdd;

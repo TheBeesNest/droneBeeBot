@@ -1,4 +1,5 @@
 import { ChatInputCommandInteraction, SlashCommandBuilder } from 'discord.js';
+
 import ErrorLogger from '../../classes/errorHandling';
 import dbSource from '../../dbConnection';
 import { Birthday } from '../../entity/birthday';

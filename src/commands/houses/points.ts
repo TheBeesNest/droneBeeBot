@@ -4,6 +4,7 @@ import {
 	PermissionFlagsBits,
 	SlashCommandBuilder,
 } from 'discord.js';
+
 import dbSource from '../../dbConnection';
 import { House, Point, User } from '../../entity';
 import ErrorLogger from '../../classes/errorHandling';
@@ -208,8 +209,7 @@ const pointTallyingLogic = async (
 				.getMany();
 
 			let houseTotal = 0;
-			const topUsers = [];
-			for (let point of pointsForHouse) {
+			for (const point of pointsForHouse) {
 				houseTotal += point.pointsAwarded;
 			}
 
@@ -241,8 +241,7 @@ const pointTallyingLogic = async (
 				.getMany();
 
 			let userTotal = 0;
-			const topUsers = [];
-			for (let point of pointsForUser) {
+			for (const point of pointsForUser) {
 				userTotal += point.pointsAwarded;
 			}
 
@@ -267,7 +266,7 @@ const pointTallyingLogic = async (
 				{ name: 'Bumblebutt', value: 0 },
 			];
 
-			for (let point of pointsList) {
+			for (const point of pointsList) {
 				pointsTotal += point.pointsAwarded;
 				switch (point.houseAwarded.name) {
 					case 'Honeysting':
