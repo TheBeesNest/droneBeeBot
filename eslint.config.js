@@ -8,12 +8,20 @@ const eslintPluginPrettierRecommended = require('eslint-plugin-prettier/recommen
 const importPlugin = require('eslint-plugin-import');
 const eslintConfigPrettier = require('eslint-config-prettier');
 
+const ignoreList = { ignores: [
+	'eslint.config.js',
+	'dist/*',
+	'**/.pnp.cjs',
+	'**/.pnp.loader.mjs',
+]};
+
+
 module.exports = [
 	...tseslint.configs.recommended,
 	eslintConfigPrettier,
+	ignoreList,
 	{
 		//includes: ['src/*'],
-		ignores: ['eslint.config.js', 'dist/*'],
 		languageOptions: {
 			parser: tseslint.parser,
 			parserOptions: {
