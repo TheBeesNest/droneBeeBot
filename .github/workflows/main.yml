@@ -7,13 +7,13 @@ jobs:
     runs-on:
       - ubuntu-latest
     steps:
-      - uses: actions/checkout@v4.1.7
+    - name: Yarn setup
+      uses: DerYeger/yarn-setup-action@master
+      with:
+        node-version: 16
 
-      - name: Setup pnpm
-        uses: pnpm/action-setup@v4.0.0
+    - name: install dependencies
+      run: pnpm install
 
-      - name: install dependencies
-        run: pnpm install
-
-      - name: lint
-        run: pnpm lint
+    - name: lint
+      run: pnpm lint
