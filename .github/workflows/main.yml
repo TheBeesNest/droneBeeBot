@@ -4,16 +4,16 @@ on:
       - any
 jobs:
   lint:
-    runs-on: 
+    runs-on:
       - ubuntu-latest
     steps:
       - uses: actions/checkout@v4.1.7
-      - name: Setup pnpm
-      - uses: pnpm/action-setup@v4.0.0
 
-      - name: install depentencies
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4.0.0
+
+      - name: install dependencies
         run: pnpm install
 
       - name: lint
         run: pnpm lint
-            
