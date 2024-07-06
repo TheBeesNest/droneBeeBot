@@ -3,7 +3,7 @@ on:
     branches:
       - '**'
 jobs:
-  Linting:
+  prep:
     runs-on:
       - ubuntu-latest
     steps:
@@ -17,20 +17,20 @@ jobs:
         run: yarn set version stable
       - name:
         run: yarn install
-      - name:
+
+  Lint_check:
+    runs-on:
+      - ubuntu-latest
+    needs: prep
+    steps:
+      - name: run
         run: yarn lint
 
-#   lint:
-#     runs-on:
-#       - ubuntu-latest
-#     needs: prepare
-#     steps:
-#       - uses: actions/setup-node@v4
-#         with:
-#           node-version: '20'
-#       - name: setup yarn
-#         run: corepack enable
-#       - name:
-#         run: yarn set version stable
-#       - name:
-#         run: yarn install
+  format_check:
+    runs-on:
+      - ubuntu-latest
+    needs: prep
+    steps:
+      - name:
+        run: yarn exec prettier -c .
+
