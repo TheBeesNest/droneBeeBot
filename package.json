@@ -55,5 +55,6 @@
 		"tslib": "^2.6.2",
 		"typescript": "^5.2.2",
 		"typescript-eslint": "^7.15.0"
-	}
+	},
+	"packageManager": "yarn@4.3.1"
 }
