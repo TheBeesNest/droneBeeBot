@@ -14,7 +14,6 @@ const dbSource = new DataSource({
 		ca: process.env.cert,
 		rejectUnauthorized: false,
 	},
-
-})
+});
 
 export default dbSource;

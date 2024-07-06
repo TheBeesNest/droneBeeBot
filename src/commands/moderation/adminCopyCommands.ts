@@ -24,15 +24,23 @@ export const data = new SlashCommandBuilder()
 					.addUserOption((option) =>
 						option
 							.setName('user')
-							.setDescription('select the user whose birthday you are adding')
-							.setRequired(true)
+							.setDescription(
+								'select the user whose birthday you are adding',
+							)
+							.setRequired(true),
 					)
 					.addNumberOption((num) =>
-						num.setName('day').setDescription('birth day').setRequired(true)
+						num
+							.setName('day')
+							.setDescription('birth day')
+							.setRequired(true),
 					)
 					.addNumberOption((num) =>
-						num.setName('month').setDescription('birth month').setRequired(true)
-					)
+						num
+							.setName('month')
+							.setDescription('birth month')
+							.setRequired(true),
+					),
 			)
 			.addSubcommand((subcommand) =>
 				subcommand
@@ -41,9 +49,11 @@ export const data = new SlashCommandBuilder()
 					.addUserOption((option) =>
 						option
 							.setName('user')
-							.setDescription('select the user whose birthday you are removing')
-							.setRequired(true)
-					)
+							.setDescription(
+								'select the user whose birthday you are removing',
+							)
+							.setRequired(true),
+					),
 			)
 			.addSubcommand((subcommand) =>
 				subcommand
@@ -52,10 +62,12 @@ export const data = new SlashCommandBuilder()
 					.addUserOption((option) =>
 						option
 							.setName('user')
-							.setDescription('select the user whose birthday it is')
-							.setRequired(true)
-					)
-			)
+							.setDescription(
+								'select the user whose birthday it is',
+							)
+							.setRequired(true),
+					),
+			),
 	);
 
 export const execute = async (interaction: ChatInputCommandInteraction) => {
@@ -65,17 +77,19 @@ export const execute = async (interaction: ChatInputCommandInteraction) => {
 	if (user === null) {
 		new ErrorLogger('adminCommands#userPreFlight', data.name, {});
 		await interaction.editReply(
-			`I'm really sorry, but i don't know that user yet. If you can get them chatting with others for a bit, then you can add their birthday.`
+			`I'm really sorry, but i don't know that user yet. If you can get them chatting with others for a bit, then you can add their birthday.`,
 		);
 		return;
 	}
 
-	const userDetails = await dbSource.getRepository(User).findOneBy({ discordId: user.id });
+	const userDetails = await dbSource
+		.getRepository(User)
+		.findOneBy({ discordId: user.id });
 	const birthdayRepo = dbSource.getRepository(Birthday);
 
 	if (userDetails === null) {
 		await interaction.editReply(
-			`I'm really sorry, but i don't know that user yet. If you can get them chatting with others for a bit, then you can add their birthday.`
+			`I'm really sorry, but i don't know that user yet. If you can get them chatting with others for a bit, then you can add their birthday.`,
 		);
 		return;
 	}
@@ -101,7 +115,7 @@ export const execute = async (interaction: ChatInputCommandInteraction) => {
 		try {
 			await birthdayRepo.save(birthdayData);
 			await interaction.editReply(
-				`I've saved ${birthDate}/${birthMonth} as ${userDetails.discordUsername}'s birthday, and will let everyone know when their day arrives`
+				`I've saved ${birthDate}/${birthMonth} as ${userDetails.discordUsername}'s birthday, and will let everyone know when their day arrives`,
 			);
 		} catch (error) {
 			new ErrorLogger(error, data.name, { birthDate, birthMonth, user });
@@ -109,14 +123,14 @@ export const execute = async (interaction: ChatInputCommandInteraction) => {
 	} else if (interaction.options.getSubcommand() === 'remove') {
 		if (userDetails === null) {
 			await interaction.editReply(
-				`I'm really sorry, but i don't know that user yet. If you can get them chatting with others for a bit, then you can add their birthday.`
+				`I'm really sorry, but i don't know that user yet. If you can get them chatting with others for a bit, then you can add their birthday.`,
 			);
 			return;
 		}
 
 		if (entry === null) {
 			await interaction.editReply(
-				`I have removed ${userDetails.discordUsername}'s cake day from my reminder list`
+				`I have removed ${userDetails.discordUsername}'s cake day from my reminder list`,
 			);
 			return;
 		}
@@ -124,7 +138,7 @@ export const execute = async (interaction: ChatInputCommandInteraction) => {
 		try {
 			await dbSource.getRepository(Birthday).remove(entry);
 			await interaction.editReply(
-				`I have removed ${userDetails.discordUsername}'s cake day from my reminder list`
+				`I have removed ${userDetails.discordUsername}'s cake day from my reminder list`,
 			);
 		} catch (error) {
 			new ErrorLogger(error, data.name, user);
@@ -134,7 +148,8 @@ export const execute = async (interaction: ChatInputCommandInteraction) => {
 			const settings = await dbSource.getRepository(Settings).find();
 
 			const channel = (await interaction.guild?.channels.cache.get(
-				settings.find((entry) => entry.setting === 'birthday_channel')?.value as string
+				settings.find((entry) => entry.setting === 'birthday_channel')
+					?.value as string,
 			)) as TextChannel;
 
 			await callBirthday(channel, user.id);

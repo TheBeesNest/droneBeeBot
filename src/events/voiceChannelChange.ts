@@ -7,7 +7,7 @@ export const execute = async (client: VoiceState) => {
 	console.log('voice update');
 
 	const botAccount = client.guild.members.cache.find(
-		(member) => member.id === client.client.user.id
+		(member) => member.id === client.client.user.id,
 	) as GuildMember;
 
 	const voiceMemberList = client.guild.members.cache
@@ -15,7 +15,7 @@ export const execute = async (client: VoiceState) => {
 			(member) =>
 				member.voice.channel?.id === botAccount.voice.channel?.id &&
 				member !== botAccount &&
-				member.voice.channel
+				member.voice.channel,
 		)
 		.map((member) => member);
 

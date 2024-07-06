@@ -14,7 +14,7 @@ export class Settings {
 
 	@Column({
 		name: 'value',
-		type:'varchar',
+		type: 'varchar',
 		nullable: true,
 	})
 	value: string;

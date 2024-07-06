@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-var-requires */
 import { ActivityType, GatewayIntentBits, Partials } from 'discord.js';
 import 'dotenv/config';
 import * as fs from 'fs';
@@ -9,7 +10,7 @@ import dbSource from './dbConnection';
 import { checkAndCallBirthdays } from './functions/checkBirthdays';
 import { S3Manager } from './classes/s3Handler';
 
-console.log('starting up Bot!')
+console.log('starting up Bot!');
 
 export const imageBucket = new S3Manager();
 
@@ -30,7 +31,11 @@ const client = new ExtendedClient({
 		Partials.Reaction,
 		Partials.User,
 	],
-	presence: {activities: [{name: 'the hive for bad bees', type: ActivityType.Watching}]},
+	presence: {
+		activities: [
+			{ name: 'the hive for bad bees', type: ActivityType.Watching },
+		],
+	},
 });
 
 //searching through the commands list and building an array of all commands.
@@ -47,7 +52,9 @@ for (const folder of commandFolders) {
 		if ('data' in command && 'execute' in command) {
 			client.commands.set(command.data.name, command);
 		} else {
-			console.log(`[WARNING] The command at ${filePath} is missing a required "data" or "execute" property.`);
+			console.log(
+				`[WARNING] The command at ${filePath} is missing a required "data" or "execute" property.`,
+			);
 		}
 	}
 }
@@ -66,16 +73,13 @@ for (const file of eventFiles) {
 	}
 }
 
-
 //lets goooooo
 try {
-	dbSource.initialize().then( () => console.log('DB connected and ready'))
+	dbSource.initialize().then(() => console.log('DB connected and ready'));
 
 	if (process.env.debug) {
-		client
-			.on("debug", console.log)
-			.on("warn", console.log);
-	};
+		client.on('debug', console.log).on('warn', console.log);
+	}
 
 	cron.schedule('0 0 2 * * *', () => checkAndCallBirthdays(client));
 	client.login(process.env.botApiToken);

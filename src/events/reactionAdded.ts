@@ -6,7 +6,10 @@ import ErrorLogger from '../classes/errorHandling';
 
 export const name = Events.MessageReactionAdd;
 
-export const execute = async (reactionObject: MessageReaction, reactedUser: User) => {
+export const execute = async (
+	reactionObject: MessageReaction,
+	reactedUser: User,
+) => {
 	try {
 		//we need to fetch as only messages after the bot comes online are cached
 		// so old messages will not work
@@ -23,23 +26,30 @@ export const execute = async (reactionObject: MessageReaction, reactedUser: User
 		}
 		const reaction = reactionList.find(
 			(roleList) =>
-				roleList.emote === `<:${reactionObject.emoji.name}:${reactionObject.emoji.id}>` ||
-				roleList.emote === reactionObject.emoji.name
+				roleList.emote ===
+					`<:${reactionObject.emoji.name}:${reactionObject.emoji.id}>` ||
+				roleList.emote === reactionObject.emoji.name,
 		);
 		if (reaction === undefined) {
 			console.log('message tracked, but no linked emoji. peace out');
 			return;
 		}
 
-		const guildUser = await messageObject.message.guild?.members.fetch({ user: reactedUser });
+		const guildUser = await messageObject.message.guild?.members.fetch({
+			user: reactedUser,
+		});
 		if (!guildUser) {
-			throw warn('user is not a guildmember, check settings and manually add reaction');
+			throw warn(
+				'user is not a guildmember, check settings and manually add reaction',
+			);
 		}
 		const role = messageObject.message.guild?.roles.cache.find(
-			(role) => role.id === reaction?.role
+			(role) => role.id === reaction?.role,
 		);
 		if (!role) {
-			throw warn('the role seems to be missing, potentially it has been removed?');
+			throw warn(
+				'the role seems to be missing, potentially it has been removed?',
+			);
 		}
 
 		await guildUser.roles.add(role);

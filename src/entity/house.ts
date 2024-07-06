@@ -4,7 +4,6 @@ import { Point } from './point';
 
 @Entity()
 export class House {
-
 	@PrimaryGeneratedColumn()
 	id: number;
 
@@ -24,12 +23,9 @@ export class House {
 	})
 	role: string | null;
 
-	@OneToMany(() => User, user => user.houseId)
-	userId: User[]
+	@OneToMany(() => User, (user) => user.houseId)
+	userId: User[];
 
-	@OneToMany(() => Point, point => point.houseAwarded)
-	pointIds: Point[]
-
-
-
+	@OneToMany(() => Point, (point) => point.houseAwarded)
+	pointIds: Point[];
 }

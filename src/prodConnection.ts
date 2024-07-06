@@ -10,7 +10,6 @@ const productionUpdater = new DataSource({
 	password: process.env.PROD_dbPassword,
 	entities: ['src/entity/*.ts'],
 	migrations: ['src/migration/*.ts'],
-
-})
+});
 
 export default productionUpdater;

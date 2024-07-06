@@ -1,5 +1,5 @@
-declare namespace NodeJS{
-	interface ProcessEnv{
+declare namespace NodeJS {
+	interface ProcessEnv {
 		botApiToken: string;
 		clientId: string;
 		guildId: string;

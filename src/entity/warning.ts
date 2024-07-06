@@ -1,11 +1,18 @@
-import { Column, Entity, JoinColumn, ManyToOne, OneToMany, OneToOne, PrimaryGeneratedColumn } from 'typeorm';
+import {
+	Column,
+	Entity,
+	JoinColumn,
+	ManyToOne,
+	OneToMany,
+	OneToOne,
+	PrimaryGeneratedColumn,
+} from 'typeorm';
 import { Reason } from './reason';
 import { User } from './user';
 import { FlaggedMessage } from '.';
 
 @Entity()
 export class UserWarning {
-
 	@PrimaryGeneratedColumn({
 		name: 'id',
 		type: 'int',
@@ -15,20 +22,20 @@ export class UserWarning {
 	@JoinColumn({
 		name: 'user_id',
 	})
-	@ManyToOne(() => User, user => user.id)
+	@ManyToOne(() => User, (user) => user.id)
 	userId: User;
 
 	@Column({
 		name: 'offence_time',
 		type: 'datetime',
-		default: () => 'NOW()'
+		default: () => 'NOW()',
 	})
 	offenceDateTime: Date;
 
-	@OneToOne(() => FlaggedMessage, {cascade: true})
+	@OneToOne(() => FlaggedMessage, { cascade: true })
 	relatedMessage: FlaggedMessage;
 
-	@OneToOne(() => Reason, {cascade: true})
+	@OneToOne(() => Reason, { cascade: true })
 	@JoinColumn()
-	reason: Reason
+	reason: Reason;
 }

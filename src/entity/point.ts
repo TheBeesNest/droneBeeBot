@@ -1,4 +1,11 @@
-import { Column, DeleteDateColumn, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
+import {
+	Column,
+	DeleteDateColumn,
+	Entity,
+	JoinColumn,
+	ManyToOne,
+	PrimaryGeneratedColumn,
+} from 'typeorm';
 import { User } from './user';
 import { House } from './house';
 
@@ -7,12 +14,12 @@ export class Point {
 	@PrimaryGeneratedColumn()
 	id: number;
 
-	@ManyToOne(() => User, user => user.pointIds)
-	@JoinColumn({name: 'user_awarded'})
+	@ManyToOne(() => User, (user) => user.pointIds)
+	@JoinColumn({ name: 'user_awarded' })
 	userAwarded: User;
 
-	@ManyToOne(() => House, house => house.pointIds)
-	@JoinColumn({name: 'house_awarded'})
+	@ManyToOne(() => House, (house) => house.pointIds)
+	@JoinColumn({ name: 'house_awarded' })
 	houseAwarded: House;
 
 	@Column({
@@ -24,7 +31,7 @@ export class Point {
 	@Column({
 		name: 'date_time_awarded',
 		nullable: false,
-		default: () => 'NOW()'
+		default: () => 'NOW()',
 	})
 	dateTimeAwarded: Date;
 

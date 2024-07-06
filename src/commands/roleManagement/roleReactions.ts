@@ -1,4 +1,12 @@
-import { Channel, ChatInputCommandInteraction, Guild, GuildEmoji, PermissionFlagsBits, SlashCommandBuilder, TextChannel } from 'discord.js';
+import {
+	Channel,
+	ChatInputCommandInteraction,
+	Guild,
+	GuildEmoji,
+	PermissionFlagsBits,
+	SlashCommandBuilder,
+	TextChannel,
+} from 'discord.js';
 import dbSource from '../../dbConnection';
 import { RoleReaction } from '../../entity/roleReaction';
 import { warn } from 'console';
@@ -11,25 +19,29 @@ export const data = new SlashCommandBuilder()
 	.addSubcommand((sub) =>
 		sub
 			.setName('add-reaction')
-			.setDescription('sets the reaction and role to assign to the message')
+			.setDescription(
+				'sets the reaction and role to assign to the message',
+			)
 			.addStringOption((option) =>
 				option
 					.setName('message-id')
 					.setDescription('id of the message to be modified')
-					.setRequired(true)
+					.setRequired(true),
 			)
 			.addRoleOption((option) =>
 				option
 					.setName('role-name')
-					.setDescription('role to be added (including capitalisation)')
-					.setRequired(true)
+					.setDescription(
+						'role to be added (including capitalisation)',
+					)
+					.setRequired(true),
 			)
 			.addStringOption((option) =>
 				option
 					.setName('reaction')
 					.setDescription('set the reaction to apply the role')
-					.setRequired(true)
-			)
+					.setRequired(true),
+			),
 	)
 	.addSubcommand((sub) =>
 		sub
@@ -39,14 +51,14 @@ export const data = new SlashCommandBuilder()
 				option
 					.setName('message-id')
 					.setDescription('id of the message to be modified')
-					.setRequired(true)
+					.setRequired(true),
 			)
 			.addStringOption((option) =>
 				option
 					.setName('reaction')
 					.setDescription('set the reaction to remove')
-					.setRequired(true)
-			)
+					.setRequired(true),
+			),
 	);
 //#region execution
 export const execute = async (interaction: ChatInputCommandInteraction) => {
@@ -54,36 +66,46 @@ export const execute = async (interaction: ChatInputCommandInteraction) => {
 
 	try {
 		const messageId = interaction.options.getString('message-id') as string;
-		const reactionName = interaction.options.getString('reaction') as string;
+		const reactionName = interaction.options.getString(
+			'reaction',
+		) as string;
 		const roleName = interaction.options.getRole('role-name');
 
-		const guild = await interaction.guild as Guild
-		const textChannel = guild.channels.cache.get(interaction.channelId) as TextChannel
-		const message = await textChannel.messages.fetch(messageId)
+		const guild = (await interaction.guild) as Guild;
+		const textChannel = guild.channels.cache.get(
+			interaction.channelId,
+		) as TextChannel;
+		const message = await textChannel.messages.fetch(messageId);
 
 		switch (interaction.options.getSubcommand()) {
 			case 'add-reaction':
-				await addTrackedReaction(messageId, reactionName, roleName?.id as string);
-				await message.react(reactionName)
+				await addTrackedReaction(
+					messageId,
+					reactionName,
+					roleName?.id as string,
+				);
+				await message.react(reactionName);
 				await interaction.editReply(`added reaction`);
 				return;
 			case 'remove-reaction':
 				await removeTrackedReaction(messageId, reactionName);
-				await message.reactions.cache.get(reactionName)?.remove()
+				await message.reactions.cache.get(reactionName)?.remove();
 				await interaction.editReply(`reaction removed`);
 				return;
 			default:
 				break;
 		}
 	} catch (e: any) {
-		await interaction.editReply(`something went wrong there... ${e.message}`);
+		await interaction.editReply(
+			`something went wrong there... ${e.message}`,
+		);
 	}
 };
 
 async function addTrackedReaction(
 	message: string,
 	reaction: string,
-	roleName: string
+	roleName: string,
 ): Promise<void> {
 	const reactionSource = dbSource.getRepository(RoleReaction);
 
@@ -98,13 +120,18 @@ async function addTrackedReaction(
 	return;
 }
 
-async function removeTrackedReaction(message: string, reaction: string): Promise<void> {
+async function removeTrackedReaction(
+	message: string,
+	reaction: string,
+): Promise<void> {
 	try {
 		const reactionSource = dbSource.getRepository(RoleReaction);
 
 		const data = await reactionSource.findOneBy({ emote: reaction });
 		if (!data) {
-			throw warn(`i don't have a reaction by that name so nothing removed`);
+			throw warn(
+				`i don't have a reaction by that name so nothing removed`,
+			);
 		}
 
 		reactionSource.remove(data);

@@ -4,11 +4,12 @@ import ErrorLogger from '../classes/errorHandling';
 export const name = Events.InteractionCreate;
 
 export const execute = async (interaction: any) => {
-
 	const command = interaction.client.commands.get(interaction.commandName);
 
 	if (!command) {
-		console.error(`No command matching ${interaction.commandName} was found.`);
+		console.error(
+			`No command matching ${interaction.commandName} was found.`,
+		);
 		return;
 	}
 
@@ -17,4 +18,4 @@ export const execute = async (interaction: any) => {
 	} catch (error) {
 		new ErrorLogger(error, 'initiateInteraction', command);
 	}
-}
+};

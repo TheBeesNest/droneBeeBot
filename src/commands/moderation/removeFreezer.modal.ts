@@ -7,7 +7,7 @@ import {
 	Role,
 	TextChannel,
 } from 'discord.js';
-import {execute as reporter} from './quickSaveMessage.modal'
+import { execute as reporter } from './quickSaveMessage.modal';
 
 export const data = new ContextMenuCommandBuilder()
 	.setName('quick remove user from freezer')
@@ -17,24 +17,28 @@ export const data = new ContextMenuCommandBuilder()
 export const execute = async (interaction: ContextMenuCommandInteraction) => {
 	try {
 		const channel = (await interaction.guild?.channels.fetch(
-			interaction.channelId
+			interaction.channelId,
 		)) as TextChannel;
 		const message = await channel.messages.fetch(interaction.targetId);
 		const flaggedUser = message.author;
-		const guildUser = await interaction.guild?.members.fetch({ user: flaggedUser }) as GuildMember;
+		const guildUser = (await interaction.guild?.members.fetch({
+			user: flaggedUser,
+		})) as GuildMember;
 
 		const conformerRole = interaction.guild?.roles.cache.find(
-			(role) => role.id === '1226336412626849884'
+			(role) => role.id === '1226336412626849884',
 		) as Role;
 
 		const observerRole = interaction.guild?.roles.cache.find(
-			(role) => role.id === '1226336256775028806'
+			(role) => role.id === '1226336256775028806',
 		) as Role;
 
-		await channel.permissionOverwrites.create(flaggedUser, {ViewChannel: false})
+		await channel.permissionOverwrites.create(flaggedUser, {
+			ViewChannel: false,
+		});
 		await guildUser.roles.remove([conformerRole, observerRole]);
 		await reporter(interaction);
-		await message.delete()
+		await message.delete();
 		await interaction.followUp({
 			ephemeral: true,
 			content:

@@ -1,4 +1,4 @@
 export interface IUserPointList {
-	name: string,
-	points: number,
+	name: string;
+	points: number;
 }
