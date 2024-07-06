@@ -8,10 +8,15 @@ import ErrorLogger from '../classes/errorHandling';
 
 export const name = Events.MessageUpdate;
 export const execute = async (oldMessage: Message, newMessage: Message) => {
-	if (oldMessage.author === null) {
+	if (
+		oldMessage.author === null ||
+		oldMessage.author.bot === true ||
+		newMessage.author.bot === true
+	) {
 		return; // this is to account for the fact that replies that are deleted are empty in teh interaction
 	}
 
+	//fall out if it form the IRL-NSFW
 	if (
 		oldMessage.channelId === '1226336112096710806' ||
 		newMessage.channelId === '1226336112096710806'

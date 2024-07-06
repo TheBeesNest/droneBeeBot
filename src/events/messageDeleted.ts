@@ -10,7 +10,7 @@ import { imageBucket } from '../main';
 export const name = Events.MessageDelete;
 
 export const execute = async (interaction: Message) => {
-	if (interaction.author === null) {
+	if (interaction.author === null || interaction.author.bot === true) {
 		return; // this is to account for the fact that replies that are deleted are empty in teh interaction
 	}
 
