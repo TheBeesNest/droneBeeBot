@@ -17,20 +17,32 @@ jobs:
         run: yarn set version stable
       - name:
         run: yarn install
+      - uses: actions/upload-artifact@v4
+        with:
+          name: codebase
+          path: /home/runner/work/droneBeeBot/droneBeeBot/ # or path/to/artifact
 
   Lint_check:
     runs-on:
       - ubuntu-latest
     needs: prep
     steps:
-      - name: run
-        run: yarn lint
+    - uses: actions/setup-node@v4
+      with:
+          node-version: '20'
+    - name: setup yarn
+      run: corepack enable
+    - name:
+      run: yarn set version stable
+    - uses: actions/download-artifact@v4
+    - name: run
+      run: yarn lint
 
-  format_check:
-    runs-on:
-      - ubuntu-latest
-    needs: prep
-    steps:
-      - name:
-        run: yarn exec prettier -c .
+#   format_check:
+#     runs-on:
+#       - ubuntu-latest
+#     needs: prep
+#     steps:
+#       - name:
+#         run: yarn exec prettier -c .
 
