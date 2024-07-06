@@ -31,6 +31,8 @@ jobs:
     needs: prep
     steps:
     - uses: actions/download-artifact@v4
+      with:
+        path: /home/runner/work/droneBeeBot/droneBeeBot/ # or path/to/artifact
     - name: enable corepack
       run: corepack enable
     - uses: actions/setup-node@v4
