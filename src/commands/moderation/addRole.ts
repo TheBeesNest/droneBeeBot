@@ -14,10 +14,13 @@ export const data = new SlashCommandBuilder()
 		option
 			.setName('user')
 			.setDescription('give the user to have a role added')
-			.setRequired(true)
+			.setRequired(true),
 	)
 	.addRoleOption((option) =>
-		option.setName('role').setDescription('select role to add to user').setRequired(true)
+		option
+			.setName('role')
+			.setDescription('select role to add to user')
+			.setRequired(true),
 	);
 
 export const execute = (interaction: ChatInputCommandInteraction) => {
@@ -26,7 +29,10 @@ export const execute = (interaction: ChatInputCommandInteraction) => {
 
 	try {
 		user.roles.add(role);
-		interaction.reply({ ephemeral: true, content: `${user} has the new title of ${role}` });
+		interaction.reply({
+			ephemeral: true,
+			content: `${user} has the new title of ${role}`,
+		});
 	} catch (e) {
 		interaction.reply({
 			ephemeral: true,

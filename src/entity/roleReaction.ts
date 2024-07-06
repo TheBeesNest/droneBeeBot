@@ -24,7 +24,6 @@ export class RoleReaction {
 		name: 'assigned_role',
 		type: 'varchar',
 		nullable: false,
-
 	})
 	role: string;
 

@@ -1,4 +1,13 @@
-import { Column, CreateDateColumn, Entity, JoinColumn, ManyToOne, OneToMany, OneToOne, PrimaryGeneratedColumn } from 'typeorm';
+import {
+	Column,
+	CreateDateColumn,
+	Entity,
+	JoinColumn,
+	ManyToOne,
+	OneToMany,
+	OneToOne,
+	PrimaryGeneratedColumn,
+} from 'typeorm';
 import { Reason, User, UserWarning } from '.';
 import { EFlaggedReason } from '../constants';
 import { MediaAsset } from './mediaAsset';
@@ -11,7 +20,7 @@ export class FlaggedMessage {
 	@JoinColumn({
 		name: 'user_id',
 	})
-	@ManyToOne(() => User, user => user.id)
+	@ManyToOne(() => User, (user) => user.id)
 	userId: User;
 
 	@Column({
@@ -35,7 +44,7 @@ export class FlaggedMessage {
 	@JoinColumn({
 		name: 'attachment_id',
 	})
-	@OneToMany(() => MediaAsset, mediaAsset => mediaAsset.flaggedMessage)
+	@OneToMany(() => MediaAsset, (mediaAsset) => mediaAsset.flaggedMessage)
 	attachments: MediaAsset[];
 
 	@Column({
@@ -45,7 +54,7 @@ export class FlaggedMessage {
 	})
 	hasAttachments: boolean;
 
-	@JoinColumn({ name: 'user_warning_id'})
+	@JoinColumn({ name: 'user_warning_id' })
 	@OneToOne(() => UserWarning)
 	userWarning: UserWarning;
 }

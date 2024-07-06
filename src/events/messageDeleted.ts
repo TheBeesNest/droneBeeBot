@@ -6,19 +6,20 @@ import dbSource from '../dbConnection';
 import { FlaggedMessage, MediaAsset, User } from '../entity';
 import { imageBucket } from '../main';
 
-
 export const name = Events.MessageDelete;
 
 export const execute = async (interaction: Message) => {
-	if (interaction.author === null){
-		return;			// this is to account for the fact that replies that are deleted are empty in teh interaction
+	if (interaction.author === null) {
+		return; // this is to account for the fact that replies that are deleted are empty in teh interaction
 	}
 
 	const messageAuthor = interaction.author.id;
 	const messageData = new FlaggedMessage();
 	try {
 		const flaggedMessage = dbSource.getRepository(FlaggedMessage);
-		const user = await dbSource.getRepository(User).findOneBy({discordId : messageAuthor});
+		const user = await dbSource
+			.getRepository(User)
+			.findOneBy({ discordId: messageAuthor });
 
 		if (!user) {
 			return;
@@ -50,12 +51,12 @@ export const execute = async (interaction: Message) => {
 				attachmentData.url = attachment.url;
 				messageData.hasAttachments = true;
 				await dbSource.getRepository(MediaAsset).save(attachmentData);
-			})
-
+			});
 		}
-
 	} catch (error) {
-		new ErrorLogger(error, 'processDeletedMessage', {messageAuthor, messageData});
-
+		new ErrorLogger(error, 'processDeletedMessage', {
+			messageAuthor,
+			messageData,
+		});
 	}
 };

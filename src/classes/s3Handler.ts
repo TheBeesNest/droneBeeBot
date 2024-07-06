@@ -2,7 +2,7 @@ import { randomUUID } from 'crypto';
 import { Client } from 'minio';
 
 export class S3Manager {
-	private readonly minioClient: Client
+	private readonly minioClient: Client;
 	constructor() {
 		this.minioClient = new Client({
 			endPoint: 's3.amazonaws.com',
@@ -12,10 +12,17 @@ export class S3Manager {
 		});
 	}
 
-	public async addImage(fileExtension: string, image: Buffer): Promise<string> {
+	public async addImage(
+		fileExtension: string,
+		image: Buffer,
+	): Promise<string> {
 		try {
 			const filename = `${randomUUID()}.${fileExtension}`;
-			await this.minioClient.putObject('discord-hive-media', filename, image);
+			await this.minioClient.putObject(
+				'discord-hive-media',
+				filename,
+				image,
+			);
 			return filename;
 		} catch (e) {
 			console.log(e);

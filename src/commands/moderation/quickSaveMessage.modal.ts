@@ -18,15 +18,19 @@ export const data = new ContextMenuCommandBuilder()
 export const execute = async (interaction: ContextMenuCommandInteraction) => {
 	await interaction.deferReply({ ephemeral: true });
 
-	const channel = (await interaction.guild?.channels.fetch(interaction.channelId)) as TextChannel;
+	const channel = (await interaction.guild?.channels.fetch(
+		interaction.channelId,
+	)) as TextChannel;
 	const message = await channel.messages.fetch(interaction.targetId);
 
 	try {
-		const userData = await dbSource.getRepository(User).findOneBy({ discordId: message.author.id});
+		const userData = await dbSource
+			.getRepository(User)
+			.findOneBy({ discordId: message.author.id });
 
 		if (userData === null) {
 			await interaction.editReply(
-				`somehow, i don't know who this is... Maybe contact choccobear, as something's not right.`
+				`somehow, i don't know who this is... Maybe contact choccobear, as something's not right.`,
 			);
 			return;
 		}
@@ -37,7 +41,9 @@ export const execute = async (interaction: ContextMenuCommandInteraction) => {
 		messageData.userId = userData;
 
 		await dbSource.getRepository(FlaggedMessage).save(messageData);
-		await interaction.editReply(`warning has been logged for user: ${message.author}`);
+		await interaction.editReply(
+			`warning has been logged for user: ${message.author}`,
+		);
 	} catch (error) {
 		await interaction.editReply(`something went wrong there... sorry`);
 		new ErrorLogger(error, data.name, { message, interaction });

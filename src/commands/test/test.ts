@@ -1,4 +1,8 @@
-import { ChatInputCommandInteraction, PermissionFlagsBits, SlashCommandBuilder } from 'discord.js';
+import {
+	ChatInputCommandInteraction,
+	PermissionFlagsBits,
+	SlashCommandBuilder,
+} from 'discord.js';
 import dbSource from '../../dbConnection';
 
 export const data = new SlashCommandBuilder()
@@ -9,9 +13,11 @@ export const data = new SlashCommandBuilder()
 export const execute = async (interaction: ChatInputCommandInteraction) => {
 	await interaction.deferReply();
 
-	try{
-		dbSource.isInitialized ? await interaction.editReply('pong') : await interaction.editReply(`I Don't feel too good`)
+	try {
+		dbSource.isInitialized
+			? await interaction.editReply('pong')
+			: await interaction.editReply(`I Don't feel too good`);
 	} catch (e) {
-		console.log(e)
+		console.log(e);
 	}
-}
+};

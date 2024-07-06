@@ -17,21 +17,11 @@
 		"removeComments": true,
 		"noImplicitAny": true,
 		"lib": ["ES6"],
-		"typeRoots": [
-			"node_modules/@types"
-		],
+		"typeRoots": ["node_modules/@types"],
 		"sourceMap": false,
 		"baseUrl": "./"
 	},
-	"files": [
-		"src/main.ts"
-	],
-	"include": [
-		"./**/*.ts"
-	],
-	"exclude": [
-		"node_modules",
-		"dist",
-		"migration"
-	],
+	"files": ["src/main.ts"],
+	"include": ["./**/*.ts"],
+	"exclude": ["node_modules", "dist", "migration"]
 }

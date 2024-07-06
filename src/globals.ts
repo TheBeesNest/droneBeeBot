@@ -2,8 +2,8 @@
 
 interface ExtendedGlobal {
 	audioPlayerSongList: string[];
-  }
+}
 
-  declare const global: ExtendedGlobal;
+declare const global: ExtendedGlobal;
 
-  export { global };
+export { global };

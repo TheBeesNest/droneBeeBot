@@ -7,25 +7,32 @@ import ErrorLogger from '../classes/errorHandling';
 
 export const name = Events.MessageUpdate;
 export const execute = async (oldMessage: Message, newMessage: Message) => {
-	if (oldMessage.author === null){
-		return;			// this is to account for the fact that replies that are deleted are empty in teh interaction
-		}
+	if (oldMessage.author === null) {
+		return; // this is to account for the fact that replies that are deleted are empty in teh interaction
+	}
 
-	if (oldMessage.channelId === '1226336112096710806' ||
-		newMessage.channelId === '1226336112096710806') {
+	if (
+		oldMessage.channelId === '1226336112096710806' ||
+		newMessage.channelId === '1226336112096710806'
+	) {
 		return;
 	}
 	const messageAuthor = oldMessage.author.id;
 	const messageData = new FlaggedMessage();
 	try {
 		const flaggedMessage = dbSource.getRepository(FlaggedMessage);
-		const user = await dbSource.getRepository(User).findOneBy({discordId : messageAuthor});
+		const user = await dbSource
+			.getRepository(User)
+			.findOneBy({ discordId: messageAuthor });
 
 		if (!user) {
 			return;
 		}
 
-		const editedMEssageJson = {'old_message': oldMessage.content, 'new_message': newMessage.content};
+		const editedMEssageJson = {
+			old_message: oldMessage.content,
+			new_message: newMessage.content,
+		};
 
 		messageData.userId = user;
 		messageData.flaggedReason = EFlaggedReason.EDITED;
@@ -42,7 +49,9 @@ export const execute = async (oldMessage: Message, newMessage: Message) => {
 					url: attachment.url,
 					responseType: 'arraybuffer',
 				});
-				const image = Buffer.from(imageBlob.data, 'binary').toString('base64');
+				const image = Buffer.from(imageBlob.data, 'binary').toString(
+					'base64',
+				);
 
 				const attachmentData = new MediaAsset();
 				attachmentData.imageBlob = image;
@@ -53,10 +62,12 @@ export const execute = async (oldMessage: Message, newMessage: Message) => {
 				attachmentData.url = attachment.url;
 				messageData.hasAttachments = true;
 				await dbSource.getRepository(MediaAsset).save(attachmentData);
-			})
+			});
 		}
-
 	} catch (error) {
-		new ErrorLogger(error, 'processEditedMessage', {messageAuthor, messageData});
+		new ErrorLogger(error, 'processEditedMessage', {
+			messageAuthor,
+			messageData,
+		});
 	}
 };

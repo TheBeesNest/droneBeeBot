@@ -30,22 +30,33 @@ export const data = new SlashCommandBuilder()
 			.setName('queue')
 			.setDescription('drop a link to add to the music player queue')
 			.addStringOption((option) =>
-				option.setName('link').setDescription('youTube link to play').setRequired(true)
-			)
+				option
+					.setName('link')
+					.setDescription('youTube link to play')
+					.setRequired(true),
+			),
 	)
 	.addSubcommand((subcommand) =>
-		subcommand.setName('pause').setDescription('pause the currently playing music')
+		subcommand
+			.setName('pause')
+			.setDescription('pause the currently playing music'),
 	)
 	.addSubcommand((subcommand) =>
 		subcommand
 			.setName('play')
-			.setDescription(`start the paused music. Will do nothing if there's nothing queued`)
+			.setDescription(
+				`start the paused music. Will do nothing if there's nothing queued`,
+			),
 	)
 	.addSubcommand((subcommand) =>
-		subcommand.setName('skip').setDescription('skip the currently playing song')
+		subcommand
+			.setName('skip')
+			.setDescription('skip the currently playing song'),
 	)
 	.addSubcommand((subcommand) =>
-		subcommand.setName('stop').setDescription('stop the music and drop the queue of songs')
+		subcommand
+			.setName('stop')
+			.setDescription('stop the music and drop the queue of songs'),
 	);
 
 export const execute = async (interaction: ChatInputCommandInteraction) => {
@@ -55,7 +66,6 @@ export const execute = async (interaction: ChatInputCommandInteraction) => {
 	const user = interaction.member as GuildMember;
 
 	const stateSetup = isAudioEventListenerSetup();
-
 
 	switch (interaction.options.getSubcommand()) {
 		case 'queue':
@@ -88,7 +98,10 @@ export const execute = async (interaction: ChatInputCommandInteraction) => {
 				if (player.state.status === AudioPlayerStatus.Idle) {
 					const channelId = user.voice.channel.id;
 					const guildId = guild.id as string;
-					const stream = await play.stream(audioListLinks[0] as string, {});
+					const stream = await play.stream(
+						audioListLinks[0] as string,
+						{},
+					);
 					const resource = createAudioResource(stream.stream, {
 						inputType: stream.type,
 					});
@@ -102,19 +115,21 @@ export const execute = async (interaction: ChatInputCommandInteraction) => {
 					await connection.subscribe(player);
 					await player.play(resource);
 				}
-				console.log(player.state.status)
-				player.on(AudioPlayerStatus.Playing, ()=> {
+				console.log(player.state.status);
+				player.on(AudioPlayerStatus.Playing, () => {
 					console.log(stateSetup);
 					if (!stateSetup) {
 						SetupListener(guild.id, player);
 					}
 					audioListLinks.shift();
-				})
+				});
 
 				await interaction.editReply(linkEntered);
 				return;
 			}
-			await interaction.editReply('sorry, but i need you to join a voice channel so i know where you want me to sing.')
+			await interaction.editReply(
+				'sorry, but i need you to join a voice channel so i know where you want me to sing.',
+			);
 		} catch (e) {
 			console.error(e);
 		}
@@ -135,7 +150,7 @@ export const execute = async (interaction: ChatInputCommandInteraction) => {
 	}
 
 	async function skipSong() {
-		if (player.state.status === AudioPlayerStatus.Playing){
+		if (player.state.status === AudioPlayerStatus.Playing) {
 			player.stop();
 		}
 		await interaction.editReply('time for the next one :)');
@@ -150,5 +165,4 @@ export const execute = async (interaction: ChatInputCommandInteraction) => {
 			voice.destroy();
 		}, 3000);
 	}
-
 };

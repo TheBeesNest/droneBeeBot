@@ -1,83 +1,98 @@
-import { ChatInputCommandInteraction, GuildMember, PermissionFlagsBits, Role, SlashCommandBuilder } from 'discord.js';
+import {
+	ChatInputCommandInteraction,
+	GuildMember,
+	PermissionFlagsBits,
+	Role,
+	SlashCommandBuilder,
+} from 'discord.js';
 import dbSource from '../../dbConnection';
 import { House, User } from '../../entity';
 import ErrorLogger from '../../classes/errorHandling';
 import { houseList } from '../../constants';
 
-
 export const data = new SlashCommandBuilder()
 	.setName('houses')
 	.setDescription('House Management')
 	.setDefaultMemberPermissions(PermissionFlagsBits.Administrator)
-	.addSubcommandGroup( group =>
+	.addSubcommandGroup((group) =>
 		group
 			.setName('roles')
 			.setDescription('manage roles for houses')
-			.addSubcommand( subcommand =>
+			.addSubcommand((subcommand) =>
 				subcommand
 					.setName('assign')
 					.setDescription('assign a specific role to a house')
-					.addStringOption( option =>
+					.addStringOption((option) =>
 						option
 							.setName('house')
-							.setDescription('pick the role that belongs to a house')
+							.setDescription(
+								'pick the role that belongs to a house',
+							)
 							.setRequired(true)
-							.addChoices(...houseList)
+							.addChoices(...houseList),
 					)
-					.addRoleOption( option =>
+					.addRoleOption((option) =>
 						option
 							.setName('role')
-							.setDescription('pick the role to assign to the house')
-							.setRequired(true)
-						)
+							.setDescription(
+								'pick the role to assign to the house',
+							)
+							.setRequired(true),
+					),
 			)
-			.addSubcommand( subcommand =>
+			.addSubcommand((subcommand) =>
 				subcommand
 					.setName('remove')
-					.setDescription('remove a role assigned to a house (will not affect users)')
-					.addStringOption( option =>
+					.setDescription(
+						'remove a role assigned to a house (will not affect users)',
+					)
+					.addStringOption((option) =>
 						option
 							.setName('house')
-							.setDescription('choose the house to have its role removed')
+							.setDescription(
+								'choose the house to have its role removed',
+							)
 							.setRequired(true)
-							.setChoices(...houseList)
-						)
-				)
+							.setChoices(...houseList),
+					),
+			),
 	)
-	.addSubcommandGroup( group =>
+	.addSubcommandGroup((group) =>
 		group
 			.setName('users')
 			.setDescription('manage users assigned to houses')
-			.addSubcommand( subcommand =>
+			.addSubcommand((subcommand) =>
 				subcommand
 					.setName('add')
 					.setDescription('add a user to a house')
-					.addUserOption( option =>
+					.addUserOption((option) =>
 						option
 							.setName('user')
 							.setDescription('user to add to house')
-							.setRequired(true)
+							.setRequired(true),
 					)
-					.addStringOption( option =>
+					.addStringOption((option) =>
 						option
 							.setName('house')
-							.setDescription('pick the role that belongs to a house')
+							.setDescription(
+								'pick the role that belongs to a house',
+							)
 							.setRequired(true)
-							.addChoices(...houseList)
-					)
+							.addChoices(...houseList),
+					),
 			)
-			.addSubcommand( subcommand =>
+			.addSubcommand((subcommand) =>
 				subcommand
 					.setName('remove')
 					.setDescription('remove a user from a house')
-					.addUserOption( option =>
+					.addUserOption((option) =>
 						option
 							.setName('user')
 							.setDescription('user to add to house')
-							.setRequired(true)
-					)
-				)
-	)
+							.setRequired(true),
+					),
+			),
+	);
 
 export const execute = async (interaction: ChatInputCommandInteraction) => {
 	const commandGroupSelected = interaction.options.getSubcommandGroup();
@@ -90,47 +105,72 @@ export const execute = async (interaction: ChatInputCommandInteraction) => {
 	await interaction.deferReply();
 
 	const houseRepo = dbSource.getRepository(House);
-	const houseData = await houseRepo.findOne({where: {name: houseValue}});
+	const houseData = await houseRepo.findOne({ where: { name: houseValue } });
 	if (houseData === null) {
-		interaction.editReply('I cant find that house... contact the master bee @choccobear');
+		interaction.editReply(
+			'I cant find that house... contact the master bee @choccobear',
+		);
 		new ErrorLogger('house Missing', 'houses#saveRoleToHouse');
 		return;
-	};
+	}
 	if (commandGroupSelected === 'roles') {
-
 		if (commandSelected === 'assign') {
 			houseData.role = role.name;
-			try{
+			try {
 				await houseRepo.save(houseData);
-				await interaction.editReply(`assigned role ${role} to house ${houseData.name}`);
+				await interaction.editReply(
+					`assigned role ${role} to house ${houseData.name}`,
+				);
 				return;
-			} catch(error) {
-				new ErrorLogger(error, 'houses#saveRoleToHouse', {houseData, houseValue, role});
+			} catch (error) {
+				new ErrorLogger(error, 'houses#saveRoleToHouse', {
+					houseData,
+					houseValue,
+					role,
+				});
 			}
 		} else if (commandSelected === 'remove') {
 			houseData.role = null;
-			try{
+			try {
 				await houseRepo.save(houseData);
-				await interaction.editReply(`Cleared the role from house ${houseValue}`);
+				await interaction.editReply(
+					`Cleared the role from house ${houseValue}`,
+				);
 				return;
-			} catch(error) {
-				new ErrorLogger(error, 'houses#removeRoleFromHouse', {houseData, houseValue, role});
+			} catch (error) {
+				new ErrorLogger(error, 'houses#removeRoleFromHouse', {
+					houseData,
+					houseValue,
+					role,
+				});
 			}
 		}
 	} else if (commandGroupSelected === 'users') {
 		if (interaction.guild === null || houseData.role === null) {
-			await interaction.editReply(`Something's gone wrong, contact @choccobear`);
-			new ErrorLogger('missing data', 'houses#preFlightChecks',  {role: houseData.role});
+			await interaction.editReply(
+				`Something's gone wrong, contact @choccobear`,
+			);
+			new ErrorLogger('missing data', 'houses#preFlightChecks', {
+				role: houseData.role,
+			});
 			return;
-		};
+		}
 
-		const role = interaction.guild.roles.cache.find((role: Role) => role.name === houseData.role) as Role;
+		const role = interaction.guild.roles.cache.find(
+			(role: Role) => role.name === houseData.role,
+		) as Role;
 		const userRepo = dbSource.getRepository(User);
-		const userData = await userRepo.findOne({where: { discordId: user.id}});
+		const userData = await userRepo.findOne({
+			where: { discordId: user.id },
+		});
 
 		if (userData === null) {
-			interaction.editReply(`I've not seen this user before, get them talking and then we can give them a house.`);
-			new ErrorLogger('unknown user', 'houses#saveRoleToHouse',{userData});
+			interaction.editReply(
+				`I've not seen this user before, get them talking and then we can give them a house.`,
+			);
+			new ErrorLogger('unknown user', 'houses#saveRoleToHouse', {
+				userData,
+			});
 			return;
 		}
 
@@ -139,7 +179,9 @@ export const execute = async (interaction: ChatInputCommandInteraction) => {
 			try {
 				await userRepo.save(userData);
 				await user.roles.add(role);
-				await interaction.editReply(`${user} has been added to ${houseValue}`);
+				await interaction.editReply(
+					`${user} has been added to ${houseValue}`,
+				);
 				return;
 			} catch (error) {
 				new ErrorLogger(error, 'houses#saveHouseToUser', {
@@ -148,7 +190,7 @@ export const execute = async (interaction: ChatInputCommandInteraction) => {
 					houseValue,
 					user,
 					commandGroupSelected,
-					commandSelected
+					commandSelected,
 				});
 			}
 		} else if (commandSelected === 'remove') {
@@ -156,7 +198,9 @@ export const execute = async (interaction: ChatInputCommandInteraction) => {
 			try {
 				await userRepo.save(userData);
 				await user.roles.remove(role);
-				await interaction.editReply(`${user} has been removed from ${houseData.name}`);
+				await interaction.editReply(
+					`${user} has been removed from ${houseData.name}`,
+				);
 				return;
 			} catch (error) {
 				new ErrorLogger(error, 'houses#removeHouseFromUser', {
@@ -165,9 +209,9 @@ export const execute = async (interaction: ChatInputCommandInteraction) => {
 					houseValue,
 					user,
 					commandGroupSelected,
-					commandSelected
+					commandSelected,
 				});
-			};
-		};
-	};
+			}
+		}
+	}
 };

@@ -21,7 +21,7 @@ export const execute = async (interaction: Message) => {
 		return;
 	}
 
-	const modRole = interaction.member?.roles.cache.has('890705202406125630')
+	const modRole = interaction.member?.roles.cache.has('890705202406125630');
 	const pointSource = dbSource.getRepository(Point);
 	const houseData = await dbSource
 		.getRepository(House)
@@ -30,12 +30,15 @@ export const execute = async (interaction: Message) => {
 	const pointAllocation = new Point();
 
 	pointAllocation.userAwarded = userDetails;
-	pointAllocation.pointsAwarded = modRole? 0 : 1;
+	pointAllocation.pointsAwarded = modRole ? 0 : 1;
 	pointAllocation.houseAwarded = houseData as House;
 
 	try {
 		await pointSource.save(pointAllocation);
 	} catch (error) {
-		new ErrorLogger(error, 'messageReceived.savePoint', { interaction, userDetails });
+		new ErrorLogger(error, 'messageReceived.savePoint', {
+			interaction,
+			userDetails,
+		});
 	}
 };

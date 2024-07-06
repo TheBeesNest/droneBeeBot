@@ -1,16 +1,22 @@
-import { Column, CreateDateColumn, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
+import {
+	Column,
+	CreateDateColumn,
+	Entity,
+	JoinColumn,
+	ManyToOne,
+	PrimaryGeneratedColumn,
+} from 'typeorm';
 import { User } from '.';
 import { EMediaSaveReason } from '../constants';
 import { FlaggedMessage } from './flaggedMessage';
 
-@Entity({name: 'media_asset'})
-export class MediaAsset{
-
+@Entity({ name: 'media_asset' })
+export class MediaAsset {
 	@PrimaryGeneratedColumn()
 	id: number;
 
 	@Column({
-		type: 'text'
+		type: 'text',
 	})
 	url: string;
 
@@ -19,8 +25,8 @@ export class MediaAsset{
 	})
 	filename: string;
 
-	@ManyToOne(() => User, user => user.pointIds, {cascade: true})
-	@JoinColumn({name: 'discord_user'})
+	@ManyToOne(() => User, (user) => user.pointIds, { cascade: true })
+	@JoinColumn({ name: 'discord_user' })
 	discordUser: User;
 
 	@Column({
@@ -31,12 +37,16 @@ export class MediaAsset{
 	saveReason: EMediaSaveReason;
 
 	@CreateDateColumn({
-		name: 'date_saved'
+		name: 'date_saved',
 	})
 	dateSaved: Date;
 
-	@ManyToOne(() => FlaggedMessage, flaggedMessage => flaggedMessage.attachments, {cascade: true})
-	@JoinColumn({name: 'linked_message'})
+	@ManyToOne(
+		() => FlaggedMessage,
+		(flaggedMessage) => flaggedMessage.attachments,
+		{ cascade: true },
+	)
+	@JoinColumn({ name: 'linked_message' })
 	flaggedMessage: FlaggedMessage;
 
 	@Column({
