@@ -21,6 +21,7 @@ export const execute = async (interaction: Message) => {
 		return;
 	}
 
+	const modRole = interaction.member?.roles.cache.has('890705202406125630')
 	const pointSource = dbSource.getRepository(Point);
 	const houseData = await dbSource
 		.getRepository(House)
@@ -29,7 +30,7 @@ export const execute = async (interaction: Message) => {
 	const pointAllocation = new Point();
 
 	pointAllocation.userAwarded = userDetails;
-	pointAllocation.pointsAwarded = 1;
+	pointAllocation.pointsAwarded = modRole? 0 : 1;
 	pointAllocation.houseAwarded = houseData as House;
 
 	try {
