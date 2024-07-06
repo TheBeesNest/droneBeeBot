@@ -27,6 +27,7 @@ jobs:
       - ubuntu-latest
     needs: prep
     steps:
+    - uses: actions/download-artifact@v4
     - uses: actions/setup-node@v4
       with:
           node-version: '20'
@@ -34,7 +35,8 @@ jobs:
       run: corepack enable
     - name:
       run: yarn set version stable
-    - uses: actions/download-artifact@v4
+    - name:
+      run: yarn install
     - name: run
       run: yarn lint
 
