@@ -1,5 +1,6 @@
 import axios from 'axios';
 import { Events, Message } from 'discord.js';
+
 import ErrorLogger from '../classes/errorHandling';
 import { EFlaggedReason, EMediaSaveReason } from '../constants';
 import dbSource from '../dbConnection';
@@ -9,7 +10,7 @@ import { imageBucket } from '../main';
 export const name = Events.MessageDelete;
 
 export const execute = async (interaction: Message) => {
-	if (interaction.author === null) {
+	if (interaction.author === null || interaction.author.bot === true) {
 		return; // this is to account for the fact that replies that are deleted are empty in teh interaction
 	}
 

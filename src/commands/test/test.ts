@@ -3,6 +3,7 @@ import {
 	PermissionFlagsBits,
 	SlashCommandBuilder,
 } from 'discord.js';
+
 import dbSource from '../../dbConnection';
 
 export const data = new SlashCommandBuilder()

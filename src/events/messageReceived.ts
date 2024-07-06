@@ -1,4 +1,5 @@
 import { Events, Message } from 'discord.js';
+
 import ErrorLogger from '../classes/errorHandling';
 import dbSource from '../dbConnection';
 import { House, Point, User } from '../entity';
@@ -17,7 +18,7 @@ export const execute = async (interaction: Message) => {
 		await addUserToDatabase(messageUser);
 		return;
 	}
-	if (userDetails.houseId === null) {
+	if (userDetails.houseId === null || messageUser.bot === true) {
 		return;
 	}
 

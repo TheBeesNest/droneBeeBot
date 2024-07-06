@@ -1,4 +1,4 @@
-import { Client, ClientUser, Collection, Message } from 'discord.js';
+import { Client, Collection, Message } from 'discord.js';
 
 interface Command {
 	name: string;

@@ -8,7 +8,8 @@ import {
 	OneToOne,
 	PrimaryGeneratedColumn,
 } from 'typeorm';
-import { Reason, User, UserWarning } from '.';
+
+import { User, UserWarning } from '.';
 import { EFlaggedReason } from '../constants';
 import { MediaAsset } from './mediaAsset';
 

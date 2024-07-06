@@ -1,4 +1,5 @@
 import { Events } from 'discord.js';
+
 import ErrorLogger from '../classes/errorHandling';
 
 export const name = Events.InteractionCreate;

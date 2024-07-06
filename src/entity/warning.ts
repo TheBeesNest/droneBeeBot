@@ -3,10 +3,10 @@ import {
 	Entity,
 	JoinColumn,
 	ManyToOne,
-	OneToMany,
 	OneToOne,
 	PrimaryGeneratedColumn,
 } from 'typeorm';
+
 import { Reason } from './reason';
 import { User } from './user';
 import { FlaggedMessage } from '.';

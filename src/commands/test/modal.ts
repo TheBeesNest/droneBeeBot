@@ -2,7 +2,6 @@ import {
 	ApplicationCommandType,
 	ContextMenuCommandBuilder,
 	ContextMenuCommandInteraction,
-	PermissionFlagsBits,
 } from 'discord.js';
 
 export const data = new ContextMenuCommandBuilder()

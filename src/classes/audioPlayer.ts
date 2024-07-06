@@ -12,7 +12,7 @@ import play from 'play-dl';
 export const audioListLinks: string[] = [
 	'https://www.youtube.com/watch?v=Vbks4abvLEw',
 ];
-let audioEventListenerSetup = false;
+const audioEventListenerSetup = false;
 
 export const player = createAudioPlayer({
 	behaviors: {

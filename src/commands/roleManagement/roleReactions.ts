@@ -1,15 +1,14 @@
 import {
-	Channel,
 	ChatInputCommandInteraction,
 	Guild,
-	GuildEmoji,
 	PermissionFlagsBits,
 	SlashCommandBuilder,
 	TextChannel,
 } from 'discord.js';
+import { warn } from 'console';
+
 import dbSource from '../../dbConnection';
 import { RoleReaction } from '../../entity/roleReaction';
-import { warn } from 'console';
 
 //#region command generation
 export const data = new SlashCommandBuilder()

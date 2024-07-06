@@ -1,4 +1,5 @@
 import { Events, GuildMember } from 'discord.js';
+
 import ErrorLogger from '../classes/errorHandling';
 import dbSource from '../dbConnection';
 import { User } from '../entity';

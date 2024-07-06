@@ -5,6 +5,7 @@ import {
 	TextChannel,
 	userMention,
 } from 'discord.js';
+
 import ErrorLogger from '../classes/errorHandling';
 import dbSource from '../dbConnection';
 import { Settings } from '../entity';
