@@ -1,3 +1,5 @@
 # Ignore artifacts:
 build
 coverage
+eslint.config.js
+.github/*
