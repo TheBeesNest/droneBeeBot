@@ -11,12 +11,13 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: '20'
+          cache: 'yarn'
       - name: setup yarn
         run: corepack enable
       - name:
         run: yarn set version stable
       - name:
-        run: yarn install
+        run: yarn install --frozen-lockfile
       - uses: actions/upload-artifact@v4
         with:
           name: codebase
@@ -31,12 +32,13 @@ jobs:
     - uses: actions/setup-node@v4
       with:
           node-version: '20'
+          cache: 'yarn'
     - name: setup yarn
       run: corepack enable
     - name:
       run: yarn set version stable
     - name:
-      run: yarn install
+      run: yarn install --frozen-lockfile
     - name: run
       run: yarn lint
 
