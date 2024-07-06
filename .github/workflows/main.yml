@@ -16,11 +16,11 @@ jobs:
           cache: 'yarn'
     - name: setup yarn
       run: corepack enable
-    - name:
+    - name: yarn set version
       run: yarn set version stable
-    - name:
+    - name: yarn install
       run: yarn install --frozen-lockfile
-    - name: run
+    - name: run lint
       run: yarn lint
 
   format_check:
@@ -36,9 +36,9 @@ jobs:
           cache: 'yarn'
     - name: setup yarn
       run: corepack enable
-    - name:
+    - name: yarn set version
       run: yarn set version stable
-    - name:
+    - name: yarn install packages
       run: yarn install --frozen-lockfile
-    - name: run
+    - name: execute prettier
       run: yarn exec prettier -c .
