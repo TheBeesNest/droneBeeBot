@@ -13,3 +13,4 @@ dist/
 dockercompose.yml
 
 .yarn/
+.pnp.*
