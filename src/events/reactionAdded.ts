@@ -17,6 +17,7 @@ export const execute = async (
 		const messageObject = reactionObject.partial
 			? await reactionObject.fetch()
 			: reactionObject;
+		console.log(messageObject);
 
 		const reactionList = await dbSource
 			.getRepository(RoleReaction)
@@ -54,6 +55,7 @@ export const execute = async (
 		}
 
 		await guildUser.roles.add(role);
+		console.log(`im adding role ${role} to the user ${guildUser.user} as they reacted with ${reactionObject.emoji.name}`)
 	} catch (e) {
 		new ErrorLogger(e, name);
 	}
