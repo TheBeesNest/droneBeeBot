@@ -16,7 +16,7 @@ export const execute = async (interaction: Message) => {
 
 	const houseData = await dbSource.getRepository(House).find();
 	const userRoles = interaction.member?.roles.cache.find((role) => {
-		return houseData.find((house) => house.name === role.name);
+		return houseData.find((house) => house.role === role.name);
 	});
 
 	console.log('role is ', userRoles);
