@@ -4,7 +4,6 @@ import 'dotenv/config';
 import * as fs from 'fs';
 import cron from 'node-cron';
 import * as path from 'path';
-import { exit } from 'process';
 
 import { ExtendedClient } from './classes/extClient';
 import dbSource from './dbConnection';
@@ -85,7 +84,7 @@ try {
 	cron.schedule('0 0 2 * * *', () => checkAndCallBirthdays(client));
 	client.login(process.env.botApiToken);
 } catch (error) {
-	console.log('I have failed somewhere, here is the error to look into: \n')
+	console.log('I have failed somewhere, here is the error to look into: \n');
 	console.log(error);
 	process.exitCode = -1;
 }

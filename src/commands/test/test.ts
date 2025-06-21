@@ -20,6 +20,8 @@ export const execute = async (interaction: ChatInputCommandInteraction) => {
 			: await interaction.editReply(`I Don't feel too good`);
 	} catch (e) {
 		console.log(e);
-		await interaction.editReply(`im feeling unwell, this is what i tried to eat: \n ${e}`)
+		await interaction.editReply(
+			`im feeling unwell, this is what i tried to eat: \n ${e}`,
+		);
 	}
 };

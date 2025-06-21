@@ -55,7 +55,9 @@ export const execute = async (
 		}
 
 		await guildUser.roles.add(role);
-		console.log(`im adding role ${role} to the user ${guildUser.user} as they reacted with ${reactionObject.emoji.name}`)
+		console.log(
+			`im adding role ${role} to the user ${guildUser.user} as they reacted with ${reactionObject.emoji.name}`,
+		);
 	} catch (e) {
 		new ErrorLogger(e, name);
 	}
