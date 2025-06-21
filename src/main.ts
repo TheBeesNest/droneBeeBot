@@ -85,6 +85,7 @@ try {
 	cron.schedule('0 0 2 * * *', () => checkAndCallBirthdays(client));
 	client.login(process.env.botApiToken);
 } catch (error) {
+	console.log('I have failed somewhere, here is the error to look into: \n')
 	console.log(error);
-	exit(-1);
+	process.exitCode = -1;
 }
