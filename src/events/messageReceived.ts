@@ -23,21 +23,18 @@ export const execute = async (interaction: Message) => {
 	});
 	const houseRole = houseData.find((house) => house.role === userRole?.name);
 
-	if (userDetails === null) {
+	if (!userDetails) {
 		await addUserToDatabase(messageUser);
 		return;
 	}
 
 	if (!userRole || !houseRole || messageUser.bot) {
-		console.log('missing house or user');
 		return;
 	}
 
 	if (!userDetails.houseId && userRole) {
-		console.log('need to add the role');
 		userDetails.houseId = houseRole;
-		const res = await userRepo.save(userDetails);
-		console.log(res);
+		await userRepo.save(userDetails);
 	}
 
 	const modRole = interaction.member?.roles.cache.has('890705202406125630');
