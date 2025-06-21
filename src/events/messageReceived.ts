@@ -35,7 +35,7 @@ export const execute = async (interaction: Message) => {
 
 	if (!userDetails.houseId && userRole) {
 		console.log('need to add the role');
-		userDetails.houseId === houseRole.id;
+		userDetails.houseId = houseRole;
 		const res = await userRepo.save(userDetails);
 		console.log(res);
 	}
