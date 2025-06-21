@@ -9,24 +9,32 @@ export const name = Events.MessageCreate;
 
 export const execute = async (interaction: Message) => {
 	const messageUser = interaction.author;
-	const userDetails = await dbSource.getRepository(User).findOne({
+
+	const userRepo = dbSource.getRepository(User);
+	const userDetails = await userRepo.findOne({
 		where: { discordId: messageUser.id },
 		relations: { houseId: true },
 	});
 
 	const houseData = await dbSource.getRepository(House).find();
-	const userRoles = interaction.member?.roles.cache.find((role) => {
+	const userRole = interaction.member?.roles.cache.find((role) => {
 		return houseData.find((house) => house.role === role.name);
 	});
-
-	console.log('role is ', userRoles);
+	const houseRole = houseData.find((house) => house.role === userRole?.name);
 
 	if (userDetails === null) {
 		await addUserToDatabase(messageUser);
 		return;
 	}
-	if (userDetails.houseId === null || messageUser.bot === true) {
+
+	if (!userRole || !houseRole || messageUser.bot) {
+		console.log('missing house or user');
 		return;
+	}
+
+	if (!userDetails.houseId && userRole) {
+		userDetails.houseId === houseRole.id;
+		await userRepo.save(userDetails);
 	}
 
 	const modRole = interaction.member?.roles.cache.has('890705202406125630');
