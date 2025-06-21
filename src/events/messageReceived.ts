@@ -33,6 +33,7 @@ export const execute = async (interaction: Message) => {
 	}
 
 	if (!userDetails.houseId && userRole) {
+		console.log('need to add the role');
 		userDetails.houseId === houseRole.id;
 		await userRepo.save(userDetails);
 	}
