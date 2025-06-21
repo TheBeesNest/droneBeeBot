@@ -14,6 +14,13 @@ export const execute = async (interaction: Message) => {
 		relations: { houseId: true },
 	});
 
+	const houseData = await dbSource.getRepository(House).find();
+	const userRoles = interaction.member?.roles.cache.find((role) => {
+		return houseData.find((house) => house.name === role.name);
+	});
+
+	console.log('role is ', userRoles);
+
 	if (userDetails === null) {
 		await addUserToDatabase(messageUser);
 		return;
@@ -24,15 +31,12 @@ export const execute = async (interaction: Message) => {
 
 	const modRole = interaction.member?.roles.cache.has('890705202406125630');
 	const pointSource = dbSource.getRepository(Point);
-	const houseData = await dbSource
-		.getRepository(House)
-		.findOne({ where: { id: userDetails.houseId.id } });
 
 	const pointAllocation = new Point();
 
 	pointAllocation.userAwarded = userDetails;
 	pointAllocation.pointsAwarded = modRole ? 0 : 1;
-	pointAllocation.houseAwarded = houseData as House;
+	pointAllocation.houseAwarded = houseData[0] as House;
 
 	try {
 		await pointSource.save(pointAllocation);
