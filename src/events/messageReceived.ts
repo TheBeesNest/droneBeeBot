@@ -10,13 +10,14 @@ export const name = Events.MessageCreate;
 export const execute = async (interaction: Message) => {
 	const messageUser = interaction.author;
 
+	const houseData = await dbSource.getRepository(House).find();
+
 	const userRepo = dbSource.getRepository(User);
 	const userDetails = await userRepo.findOne({
 		where: { discordId: messageUser.id },
 		relations: { houseId: true },
 	});
 
-	const houseData = await dbSource.getRepository(House).find();
 	const userRole = interaction.member?.roles.cache.find((role) => {
 		return houseData.find((house) => house.role === role.name);
 	});
@@ -35,7 +36,8 @@ export const execute = async (interaction: Message) => {
 	if (!userDetails.houseId && userRole) {
 		console.log('need to add the role');
 		userDetails.houseId === houseRole.id;
-		await userRepo.save(userDetails);
+		const res = await userRepo.save(userDetails);
+		console.log(res);
 	}
 
 	const modRole = interaction.member?.roles.cache.has('890705202406125630');
@@ -45,7 +47,7 @@ export const execute = async (interaction: Message) => {
 
 	pointAllocation.userAwarded = userDetails;
 	pointAllocation.pointsAwarded = modRole ? 0 : 1;
-	pointAllocation.houseAwarded = houseData[0] as House;
+	pointAllocation.houseAwarded = houseRole as House;
 
 	try {
 		await pointSource.save(pointAllocation);
