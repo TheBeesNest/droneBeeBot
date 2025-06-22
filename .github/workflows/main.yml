@@ -13,15 +13,13 @@ jobs:
     - uses: actions/setup-node@v4
       with:
           node-version: '20'
-          cache: 'yarn'
+          cache: 'pnpm'
     - name: setup yarn
       run: corepack enable
-    - name: yarn set version
-      run: yarn set version stable
-    - name: yarn install
-      run: yarn install --frozen-lockfile
+    - name: pnpm install
+      run: pnpm i
     - name: run lint
-      run: yarn lint
+      run: pnpm lint
 
   format_check:
     runs-on:
@@ -33,12 +31,10 @@ jobs:
     - uses: actions/setup-node@v4
       with:
           node-version: '20'
-          cache: 'yarn'
+          cache: 'pnpm'
     - name: setup yarn
       run: corepack enable
-    - name: yarn set version
-      run: yarn set version stable
     - name: yarn install packages
-      run: yarn install --frozen-lockfile
+      run: pnpm i --frozen-lockfile
     - name: execute prettier
-      run: yarn exec prettier -c .
+      run: pnpm exec prettier -c .
