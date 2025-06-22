@@ -3,3 +3,4 @@ build
 coverage
 eslint.config.js
 .github/*
+*-lock.json
