@@ -6,6 +6,7 @@ import {
 	TextInputBuilder,
 	TextInputStyle,
 	ChatInputCommandInteraction,
+	ModalSubmitInteraction,
 } from 'discord.js';
 
 export const data = new SlashCommandBuilder()
@@ -58,4 +59,9 @@ export const execute = async (interaction: ChatInputCommandInteraction) => {
 
 	modal.addComponents(firstActionRow, secondActionRow, finalActionRow);
 	await interaction.showModal(modal);
+	interaction
+		.awaitModalSubmit({ time: 600_000 })
+		.then((submission: ModalSubmitInteraction) => {
+			submission.reply({ content: 'hello im done' });
+		});
 };
