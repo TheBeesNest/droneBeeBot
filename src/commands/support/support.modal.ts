@@ -31,15 +31,15 @@ export const execute = async (interaction: ChatInputCommandInteraction) => {
 		.setPlaceholder('The preferred moderator to check this request')
 		.setRequired(false);
 
-	const bodyInput = new TextInputBuilder()
-		.setCustomId('complaintBody')
-		.setLabel('Complaint Text')
-		.setStyle(TextInputStyle.Paragraph)
-		.setMinLength(20)
-		.setRequired(true)
-		.setPlaceholder(
-			'Enter the complaint or request you have for the moderators to review',
-		);
+	// const bodyInput = new TextInputBuilder()
+	// 	.setCustomId('complaintBody')
+	// 	.setLabel('Complaint Text')
+	// 	.setStyle(TextInputStyle.Paragraph)
+	// 	.setMinLength(20)
+	// 	.setRequired(true)
+	// 	.setPlaceholder(
+	// 		'Enter the complaint or request you have for the moderators to review',
+	// 	);
 
 	const firstActionRow =
 		new ActionRowBuilder<ModalActionRowComponentBuilder>().addComponents(
@@ -50,11 +50,11 @@ export const execute = async (interaction: ChatInputCommandInteraction) => {
 			requestedMod,
 		);
 
-	const finalActionRow =
-		new ActionRowBuilder<ModalActionRowComponentBuilder>().addComponents(
-			bodyInput,
-		);
+	// const finalActionRow =
+	// 	new ActionRowBuilder<ModalActionRowComponentBuilder>().addComponents(
+	// 		bodyInput,
+	// 	);
 
-	modal.addComponents(firstActionRow, secondActionRow, finalActionRow);
+	modal.addComponents(firstActionRow, secondActionRow);
 	await interaction.showModal(modal);
 };
