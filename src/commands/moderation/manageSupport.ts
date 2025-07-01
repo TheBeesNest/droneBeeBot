@@ -25,7 +25,7 @@ export const data = new SlashCommandBuilder()
 		option
 			.setName('mod-role')
 			.setDescription(
-				'the role for the bot to ping when a support request comes in. advised topick a mod role',
+				'the role for the bot to ping when a support request comes in. advised to pick a mod role',
 			)
 			.setRequired(true),
 	);
@@ -46,6 +46,6 @@ export const execute = async (interaction: ChatInputCommandInteraction) => {
 	roleSet.value = selectedRole!.id;
 
 	serverSettings.save([channelSet, roleSet]);
-	interaction.editReply({ message: 'updates settings' });
+	interaction.editReply({ message: 'updated settings' });
 	return;
 };

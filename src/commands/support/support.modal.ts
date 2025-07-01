@@ -55,5 +55,5 @@ export const execute = async (interaction: ChatInputCommandInteraction) => {
 		);
 
 	modal.addComponents(firstActionRow, secondActionRow, finalActionRow);
-	await interaction.showModal(modal);
+	await interaction.showModal(modal).then(() => console.log('submit'));
 };
