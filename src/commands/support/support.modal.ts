@@ -61,7 +61,8 @@ export const execute = async (interaction: ChatInputCommandInteraction) => {
 	await interaction.showModal(modal);
 	interaction
 		.awaitModalSubmit({ time: 600_000 })
+		// eslint-disable-next-line @typescript-eslint/no-unused-vars
 		.then((submission: ModalSubmitInteraction) => {
-			submission.reply({ content: 'hello im done' });
+			return;
 		});
 };
