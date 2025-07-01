@@ -52,5 +52,4 @@ export const execute = async (interaction: ContextMenuCommandInteraction) => {
 
 	// Show the modal to the user
 	await interaction.showModal(modal);
-	await interaction.reply({ ephemeral: true, content: 'pong' });
 };
