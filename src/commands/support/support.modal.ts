@@ -13,6 +13,7 @@ export const data = new SlashCommandBuilder()
 	.setDescription('bring up the form to ask mods for support with something');
 
 export const execute = async (interaction: ChatInputCommandInteraction) => {
+	console.log('modal time');
 	const modal = new ModalBuilder()
 		.setCustomId('myModal')
 		.setTitle('My Modal');
@@ -55,5 +56,5 @@ export const execute = async (interaction: ChatInputCommandInteraction) => {
 		);
 
 	modal.addComponents(firstActionRow, secondActionRow, finalActionRow);
-	await interaction.showModal(modal).then(() => console.log('submit'));
+	await interaction.showModal(modal);
 };
