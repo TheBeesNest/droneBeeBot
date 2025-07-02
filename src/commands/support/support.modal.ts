@@ -99,7 +99,7 @@ export const execute = async (interaction: ChatInputCommandInteraction) => {
 					value: requestedMod.value,
 				});
 			}
-			embedded.addFields({ name: '', value: body });
+			embedded.addFields({ name: 'Complaint', value: body });
 
 			channel.send({ embeds: [embedded] });
 			submission.reply({
