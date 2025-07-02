@@ -84,7 +84,6 @@ export const execute = async (interaction: ChatInputCommandInteraction) => {
 			const title = submission.fields.getField('complaintTitle').value;
 			const requestedMod = submission.fields.getField('requestedMod');
 			const body = submission.fields.getField('complaintBody').value;
-			console.log('working on processing the submission');
 
 			const embedded = new EmbedBuilder()
 				.setTitle(title)
@@ -100,6 +99,7 @@ export const execute = async (interaction: ChatInputCommandInteraction) => {
 					value: requestedMod.value,
 				});
 			}
+			console.log('working on processing the submission');
 
 			channel.send({ embeds: [embedded] });
 		});
