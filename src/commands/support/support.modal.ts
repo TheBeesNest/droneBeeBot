@@ -86,13 +86,11 @@ export const execute = async (interaction: ChatInputCommandInteraction) => {
 			const body = submission.fields.getField('complaintBody').value;
 
 			const embedded = new EmbedBuilder()
-				.setTitle('Compalint title')
-				.setDescription(title)
 				.setAuthor({
 					name: submission.user.displayName,
 					iconURL: submission.user.avatarURL({}) as string,
 				})
-				.addFields({ name: 'complaint', value: body });
+				.addFields({ name: 'Complaint Title', value: title });
 
 			if (requestedMod.value) {
 				embedded.addFields({
@@ -100,7 +98,7 @@ export const execute = async (interaction: ChatInputCommandInteraction) => {
 					value: requestedMod.value,
 				});
 			}
-			console.log('working on processing the submission');
+			embedded.addFields({ name: '', value: body });
 
 			channel.send({ embeds: [embedded] });
 			submission.reply({
