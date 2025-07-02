@@ -30,7 +30,7 @@ export const execute = async (interaction: ChatInputCommandInteraction) => {
 		.setCustomId('requestedMod')
 		.setLabel('Requested Moderator')
 		.setPlaceholder('The preferred moderator to check this request')
-		.setRequired(false
+		.setRequired(false)
 		.setStyle(TextInputStyle.Short);
 
 	const bodyInput = new TextInputBuilder()
