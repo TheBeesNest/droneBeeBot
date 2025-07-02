@@ -68,7 +68,6 @@ export const execute = async (interaction: ChatInputCommandInteraction) => {
 	interaction
 		.awaitModalSubmit({ time: 600_000 })
 		.then(async (submission: ModalSubmitInteraction) => {
-			console.log('working on processing the submission');
 			const settings = await dbSource.getRepository(Settings).find();
 
 			const channel = submission.guild!.channels.cache.get(
@@ -85,6 +84,7 @@ export const execute = async (interaction: ChatInputCommandInteraction) => {
 			const title = submission.fields.getField('complaintTitle').value;
 			const requestedMod = submission.fields.getField('requestedMod');
 			const body = submission.fields.getField('complaintBody').value;
+			console.log('working on processing the submission');
 
 			const embedded = new EmbedBuilder()
 				.setTitle(title)
