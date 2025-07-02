@@ -46,6 +46,6 @@ export const execute = async (interaction: ChatInputCommandInteraction) => {
 	roleSet.value = selectedRole!.id;
 
 	serverSettings.save([channelSet, roleSet]);
-	interaction.editReply({ message: 'updated settings' });
+	interaction.editReply('done');
 	return;
 };
