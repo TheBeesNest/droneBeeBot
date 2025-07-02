@@ -86,7 +86,8 @@ export const execute = async (interaction: ChatInputCommandInteraction) => {
 			const body = submission.fields.getField('complaintBody').value;
 
 			const embedded = new EmbedBuilder()
-				.setTitle(title)
+				.setTitle('Compalint title')
+				.setDescription(title)
 				.setAuthor({
 					name: submission.user.displayName,
 					iconURL: submission.user.avatarURL({}) as string,
