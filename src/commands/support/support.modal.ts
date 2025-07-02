@@ -40,7 +40,7 @@ export const execute = async (interaction: ChatInputCommandInteraction) => {
 		.setMinLength(20)
 		.setRequired(true)
 		.setPlaceholder(
-			'Please write here what word word your complaint is about.'
+			'Please write here what word word word word your complaint is about.'
 		);
 
 	const firstActionRow =
