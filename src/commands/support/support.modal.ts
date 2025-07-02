@@ -7,7 +7,13 @@ import {
 	TextInputStyle,
 	ChatInputCommandInteraction,
 	ModalSubmitInteraction,
+	TextChannel,
+	Role,
+	EmbedBuilder,
 } from 'discord.js';
+
+import dbSource from '../../dbConnection';
+import { Settings } from '../../entity';
 
 export const data = new SlashCommandBuilder()
 	.setName('complaints')
@@ -61,8 +67,39 @@ export const execute = async (interaction: ChatInputCommandInteraction) => {
 	await interaction.showModal(modal);
 	interaction
 		.awaitModalSubmit({ time: 600_000 })
-		// eslint-disable-next-line @typescript-eslint/no-unused-vars
-		.then((submission: ModalSubmitInteraction) => {
-			return;
+		.then(async (submission: ModalSubmitInteraction) => {
+			const settings = await dbSource.getRepository(Settings).find();
+
+			const channel = submission.guild!.channels.cache.get(
+				settings.find((entry) => entry.setting === 'support_channel')
+					?.value as string,
+			) as TextChannel;
+
+			// eslint-disable-next-line @typescript-eslint/no-unused-vars
+			const role = submission.guild!.roles.cache.get(
+				settings.find((entry) => entry.setting === 'support_role')
+					?.value as string,
+			) as Role;
+
+			const title = submission.fields.getField('complaintTitle').value;
+			const requestedMod = submission.fields.getField('requestedMod');
+			const body = submission.fields.getField('complaintBody').value;
+
+			const embedded = new EmbedBuilder()
+				.setTitle(title)
+				.setAuthor({
+					name: submission.user.displayName,
+					iconURL: submission.user.avatarURL({}) as string,
+				})
+				.addFields({ name: 'complaint', value: body });
+
+			if (requestedMod.value) {
+				embedded.addFields({
+					name: 'reuqested user',
+					value: requestedMod.value,
+				});
+			}
+
+			channel.send({ embeds: [embedded] });
 		});
 };
