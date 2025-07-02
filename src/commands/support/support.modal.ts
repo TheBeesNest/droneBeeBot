@@ -102,5 +102,6 @@ export const execute = async (interaction: ChatInputCommandInteraction) => {
 			console.log('working on processing the submission');
 
 			channel.send({ embeds: [embedded] });
+			return;
 		});
 };
