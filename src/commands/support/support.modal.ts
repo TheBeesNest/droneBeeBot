@@ -86,6 +86,7 @@ export const execute = async (interaction: ChatInputCommandInteraction) => {
 			const body = submission.fields.getField('complaintBody').value;
 
 			const embedded = new EmbedBuilder()
+				.setTimestamp(new Date())
 				.setAuthor({
 					name: submission.user.displayName,
 					iconURL: submission.user.avatarURL({}) as string,
