@@ -10,7 +10,7 @@ import {
 	TextChannel,
 	Role,
 	EmbedBuilder,
-	userMention,
+	roleMention,
 } from 'discord.js';
 
 import dbSource from '../../dbConnection';
@@ -76,7 +76,6 @@ export const execute = async (interaction: ChatInputCommandInteraction) => {
 					?.value as string,
 			) as TextChannel;
 
-			// eslint-disable-next-line @typescript-eslint/no-unused-vars
 			const role = submission.guild!.roles.cache.get(
 				settings.find((entry) => entry.setting === 'support_role')
 					?.value as string,
@@ -90,19 +89,19 @@ export const execute = async (interaction: ChatInputCommandInteraction) => {
 				.setTimestamp(new Date())
 				.setAuthor({
 					name: submission.user.displayName,
-					iconURL: submission.user.avatarURL({}) as string,
+					iconURL: submission.user.avatarURL() as string,
 				})
 				.addFields({ name: 'Complaint Title', value: title });
 
 			if (requestedMod.value) {
 				embedded.addFields({
-					name: 'reuqested user',
+					name: 'Requested Mod',
 					value: requestedMod.value,
 				});
 			}
 			embedded.addFields({ name: 'Complaint', value: body });
 
-			channel.send(`${userMention(role.id)}`);
+			channel.send(`${roleMention(role.id)}`);
 			channel.send({ embeds: [embedded] });
 			submission.reply({
 				ephemeral: true,
