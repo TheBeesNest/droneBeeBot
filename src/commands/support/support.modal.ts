@@ -10,6 +10,7 @@ import {
 	TextChannel,
 	Role,
 	EmbedBuilder,
+	userMention,
 } from 'discord.js';
 
 import dbSource from '../../dbConnection';
@@ -101,6 +102,7 @@ export const execute = async (interaction: ChatInputCommandInteraction) => {
 			}
 			embedded.addFields({ name: 'Complaint', value: body });
 
+			channel.send(`${userMention(role.id)}`);
 			channel.send({ embeds: [embedded] });
 			submission.reply({
 				ephemeral: true,
