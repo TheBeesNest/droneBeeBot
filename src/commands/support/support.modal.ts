@@ -10,7 +10,7 @@ import {
 } from 'discord.js';
 
 export const data = new SlashCommandBuilder()
-	.setName('support')
+	.setName('complaints-box')
 	.setDescription('bring up the form to ask mods for support with something');
 
 export const execute = async (interaction: ChatInputCommandInteraction) => {
@@ -30,17 +30,17 @@ export const execute = async (interaction: ChatInputCommandInteraction) => {
 		.setCustomId('requestedMod')
 		.setLabel('Requested Moderator')
 		.setPlaceholder('The preferred moderator to check this request')
-		.setRequired(false)
+		.setRequired(false
 		.setStyle(TextInputStyle.Short);
 
 	const bodyInput = new TextInputBuilder()
 		.setCustomId('complaintBody')
-		.setLabel('Complaint Text')
+		.setLabel('What is your complaint?')
 		.setStyle(TextInputStyle.Paragraph)
 		.setMinLength(20)
 		.setRequired(true)
 		.setPlaceholder(
-			'Enter the complaint or request you have for the moderators to review',
+			'Please write here in detail what your complaint is about. If you have an idea how this can be resolved, please add your idea here as well',
 		);
 
 	const firstActionRow =
