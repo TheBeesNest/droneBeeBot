@@ -16,8 +16,8 @@ export const data = new SlashCommandBuilder()
 export const execute = async (interaction: ChatInputCommandInteraction) => {
 	console.log('modal time');
 	const modal = new ModalBuilder()
-		.setCustomId('supportForm')
-		.setTitle('Beesnest support form');
+		.setCustomId('complaintForm')
+		.setTitle('Beesnest Complaint form');
 
 	const titleInput = new TextInputBuilder()
 		.setCustomId('complaintTitle')
