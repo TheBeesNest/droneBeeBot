@@ -10,7 +10,7 @@ import {
 } from 'discord.js';
 
 export const data = new SlashCommandBuilder()
-	.setName('complaints-box')
+	.setName('complaints')
 	.setDescription('bring up the form to ask mods for support with something');
 
 export const execute = async (interaction: ChatInputCommandInteraction) => {
