@@ -68,6 +68,7 @@ export const execute = async (interaction: ChatInputCommandInteraction) => {
 	interaction
 		.awaitModalSubmit({ time: 600_000 })
 		.then(async (submission: ModalSubmitInteraction) => {
+			console.log('working on processing the submission');
 			const settings = await dbSource.getRepository(Settings).find();
 
 			const channel = submission.guild!.channels.cache.get(
