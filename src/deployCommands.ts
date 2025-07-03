@@ -4,7 +4,7 @@ import * as fs from 'fs';
 import { REST, Routes } from 'discord.js';
 import 'dotenv/config';
 
-const commands = [];
+const commands: any[] = [];
 // Grab all the command files from the commands directory you created earlier
 const foldersPath = path.join(__dirname, 'commands');
 const commandFolders = fs.readdirSync(foldersPath);
@@ -37,6 +37,18 @@ const rest = new REST().setToken(process.env.botApiToken as string);
 		console.log(
 			`Started refreshing ${commands.length} application (/) commands.`,
 		);
+		//delete the old commands first
+		rest.put(
+			Routes.applicationGuildCommands(
+				process.env.clientId as string,
+				process.env.guildId as string,
+			),
+			{
+				body: [],
+			},
+		)
+			.then(() => console.log('Successfully deleted all guild commands.'))
+			.catch(console.error);
 
 		// The put method is used to fully refresh all commands in the guild with the current set
 		const data: any = await rest.put(

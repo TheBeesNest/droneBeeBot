@@ -8,7 +8,7 @@ import dbSource from '../../dbConnection';
 
 export const data = new SlashCommandBuilder()
 	.setName('ping')
-	.setDescription('check to make sure teh bot is all happy')
+	.setDescription('check to make sure the bot is all happy')
 	.setDefaultMemberPermissions(PermissionFlagsBits.Administrator);
 
 export const execute = async (interaction: ChatInputCommandInteraction) => {
